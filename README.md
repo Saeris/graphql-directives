@@ -83,6 +83,8 @@ import { formatDate } from "@saeris/graphql-directives"
 Allows clients to apply custom date formatting to date strings. Uses [`date-fns`](https://date-fns.org/v1.30.1/docs/format) under the hood. Formats include the following:
 
 <!-- prettier-ignore-start -->
+<details>
+<summary>Show Formats Table</summary>
 | Unit                    | Token | Result Examples
 |:------------------------|:------|:----------------------------------|
 | Month	                  | M	    | 1, 2, ..., 12                     |
@@ -129,6 +131,7 @@ Allows clients to apply custom date formatting to date strings. Uses [`date-fns`
 |                         | ZZ	  | -0100, +0000, ..., +1200          |
 | Seconds timestamp	      | X	    | 512969520                         |
 | Milliseconds timestamp	| x	    | 512969520900                      |
+</details>
 <!-- prettier-ignore-end -->
 
 ## 📣 Acknowledgements
