@@ -1,0 +1,25 @@
+# package directories
+node_modules
+jspm_packages
+
+# Directories
+.serverless
+.webpack
+.netlify
+/.coverage
+/dist
+/build
+/typings
+/.awcache
+/.ssh
+/electron.js*
+
+# Files
+.DS_STORE
+npm-debug.log*
+yarn-error.log*
+.env
+serverless.env.yml
+.nyc_output
+coverage.lcov
+engine.json
