@@ -2,15 +2,20 @@ import { ApolloServer } from "apollo-server"
 import { typeDefs } from "./types"
 import { resolvers } from "./resolvers"
 import { defaultQuery } from "./defaultQuery"
-import * as schemaDirectives from "../src"
+import schemaDirectives from "../src"
 
 const endpoint = {
   host: `localhost`,
   port: 4000
 }
 
+const directives = Object.values(schemaDirectives).map(directive => directive.declaration())
+
 const server = new ApolloServer({
-  typeDefs,
+  typeDefs: [
+    ...typeDefs,
+    ...directives
+  ],
   resolvers,
   schemaDirectives,
   playground: {

@@ -1,23 +1,15 @@
+import { gql } from "apollo-server"
 import { SchemaDirectiveVisitor } from "graphql-tools"
-import {
-  defaultFieldResolver,
-  DirectiveLocation,
-  GraphQLDirective,
-  GraphQLString
-} from "graphql"
-import transform from "date-fns/format"
+import { defaultFieldResolver, GraphQLString } from "graphql"
+import formatter from "date-fns/format"
 
 export class formatDate extends SchemaDirectiveVisitor {
-  static getDirectiveDeclaration(directiveName) {
-    return new GraphQLDirective({
-      name: directiveName,
-      locations: DirectiveLocation.FIELD_DEFINITION,
-      args: {
-        requires: {
-          defaultFormat: `MMMM D, YYYY`
-        }
-      }
-    })
+  static declaration() {
+    return gql`
+      directive @formatDate(
+        defaultFormat: String! = "MMMM D, YYYY"
+      ) on FIELD_DEFINITION
+    `
   }
 
   visitFieldDefinition(field) {
@@ -28,7 +20,8 @@ export class formatDate extends SchemaDirectiveVisitor {
 
     field.resolve = async function(source, { format, ...args }, context, info) {
       const result = await resolve.call(this, source, args, context, info)
-      return transform(result, format || defaultFormat)
+      const transform = input => formatter(input, format || defaultFormat)
+      return Array.isArray(result) ? result.map(transform) : transform(result)
     }
 
     field.type = GraphQLString

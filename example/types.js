@@ -8,16 +8,19 @@ const Query = gql`
 
 const Person = gql`
   type Person {
-    birthDate: String
-    ageInYears: Int
+    birthDate: String @formatDate
+    age: Int @convertTime(originalUnit: years)
     balance: Float @formatNumber
-    heightInInches: Float
-    minimumHourlyRate: Float
-    currentlyActiveProjects: Int
-    email: String
-    homePage: String
-    phoneNumber: String
-    homePostalCode: String
+    height: Float @convertLength(originalUnit: inches)
+    weight: Int @convertMass(originalUnit: poundmass)
+    trajectory: Float @convertAngle(originalUnit: deg)
+    roomDimensions: Float @convertSurfaceArea(originalUnit: sqft)
+    bagSize: Float @convertVolume(originalUnit: cuin)
+    coffeeConsumed: Float @convertLiquidVolume(originalUnit: fluidounce)
+    hourlyRate: Int @formatCurrency
+    phoneNumber: String @formatPhoneNumber
+    powerSupply: Int @convertElectroMagneticForce(originalUnit: watts)
+    diskSpace: Int @convertBinary(originalUnit: bytes)
   }
 `
 

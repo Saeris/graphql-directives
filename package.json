@@ -1,7 +1,12 @@
 {
   "name": "@saeris/graphql-directives",
   "description": "A collection of custom GraphQL Schema Directives for use with Apollo Server.",
-  "keywords": ["apollo", "graphql", "directives", "schema directives"],
+  "keywords": [
+    "apollo",
+    "graphql",
+    "directives",
+    "schema directives"
+  ],
   "author": "Drake Costa <drake@saeris.io> (http://saeris.github.io/)",
   "repository": {
     "type": "git",
@@ -10,22 +15,49 @@
   "license": "MIT",
   "main": "src/index.js",
   "scripts": {
-    "start": "nodemon index.js localhost 4000"
+    "start": "nodemon --exec babel-node example/index.js",
+    "build": "pack build",
+    "lint": "eslint ./src",
+    "test": "yarn lint && jest -c ./jest.config.js",
+    "test:watch": "jest -c ./jest.config.js --watch",
+    "test:coverage": "jest -c ./jest.config.js && codecov",
+    "precommit": "lint-staged",
+    "prepublish": "snyk protect",
+    "release": "pack publish"
   },
   "dependencies": {
-    "apollo-server": "^2.3.3",
     "date-fns": "1.30.1",
-    "graphql": "14.0.2",
+    "dinero.js": "^1.5.0",
     "joi": "14.3.1",
-    "lodash-es": "^4.17.11",
+    "libphonenumber-js": "^1.7.9",
+    "lodash": "^4.17.11",
+    "mathjs": "^5.5.0",
     "numeral": "2.0.6"
   },
   "devDependencies": {
-    "@pika/pack": "^0.3.1",
-    "@pika/plugin-build-node": "^0.3.9",
-    "@pika/plugin-standard-pkg": "^0.3.9",
-    "@types/graphql": "14.0.1",
-    "nodemon": "1.18.4"
+    "@babel/core": "^7.3.3",
+    "@babel/node": "^7.0.0",
+    "@babel/plugin-proposal-export-namespace-from": "^7.2.0",
+    "@babel/preset-env": "^7.0.0",
+    "@pika/pack": "^0.3.2",
+    "@pika/plugin-build-node": "^0.3.11",
+    "@pika/plugin-standard-pkg": "^0.3.11",
+    "@types/graphql": "14.0.7",
+    "apollo-server": "^2.4.6",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-eslint": "^10.0.1",
+    "babel-jest": "^24.1.0",
+    "codecov": "^3.2.0",
+    "eslint": "^5.14.1",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-jest": "^22.3.0",
+    "eslint-plugin-promise": "^4.0.0",
+    "graphql": "14.1.1",
+    "jest": "^24.1.0",
+    "lint-staged": "^8.1.4",
+    "nodemon": "1.18.10",
+    "prettier": "^1.7.0",
+    "snyk": "^1.134.2"
   },
   "peerDependencies": {
     "graphql": "^14.0.0"
@@ -35,10 +67,18 @@
       [
         "@pika/plugin-standard-pkg",
         {
-          "exclude": ["__TEST__/*"]
+          "exclude": [
+            "__TEST__/*"
+          ]
         }
       ],
-      ["@pika/plugin-build-node"]
+      [
+        "@pika/plugin-build-node"
+      ]
     ]
-  }
+  },
+  "gitHooks": {
+    "pre-commit": "lint-staged"
+  },
+  "snyk": true
 }

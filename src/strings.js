@@ -1,26 +1,22 @@
+import { gql } from "apollo-server"
 import { SchemaDirectiveVisitor } from "graphql-tools"
-import {
-  defaultFieldResolver,
-  DirectiveLocation,
-  GraphQLDirective,
-  GraphQLString
-} from "graphql"
-import lodash from "lodash-es"
+import { defaultFieldResolver, GraphQLString } from "graphql"
+import lodash from "lodash"
 
 const createStringDirective = method =>
   class extends SchemaDirectiveVisitor {
-    static getDirectiveDeclaration(directiveName) {
-      return new GraphQLDirective({
-        name: directiveName,
-        locations: DirectiveLocation.FIELD_DEFINITION
-      })
+    static declaration() {
+      return gql`
+        directive @${method} on FIELD_DEFINITION
+      `
     }
 
     visitFieldDefinition(field) {
       const { resolve = defaultFieldResolver } = field
       field.resolve = async function(...args) {
         const result = await resolve.apply(this, args)
-        return typeof result === `string` ? lodash[method](result) : result
+        const transform = input => (typeof input === `string` ? lodash[method](input) : input)
+        return Array.isArray(result) ? result.map(transform) : transform(result)
       }
 
       field.type = GraphQLString
@@ -40,8 +36,6 @@ export const lowerCase = createStringDirective(`lowerCase`)
 export const lowerFirst = createStringDirective(`lowerFirst`)
 
 export const snakeCase = createStringDirective(`snakeCase`)
-
-export const startCase = createStringDirective(`startCase`)
 
 export const toLower = createStringDirective(`toLower`)
 

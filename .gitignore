@@ -8,6 +8,7 @@ jspm_packages
 .netlify
 /.coverage
 /dist
+/pkg
 /build
 /typings
 /.awcache

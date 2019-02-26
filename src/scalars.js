@@ -7,13 +7,13 @@ export class MaxLength extends GraphQLScalarType {
       name: `MaxLength${limit}`,
 
       serialize(value) {
-        value = type.serialize(value)
+        const serialized = type.serialize(value)
         Joi.assert(
-          value,
+          serialized,
           [Joi.string().max(limit), Joi.number().max(limit)],
           new TypeError(`Value exceeds limit: ${limit}`)
         )
-        return value
+        return serialized
       },
 
       parseValue(value) {
@@ -33,13 +33,13 @@ export class MinLength extends GraphQLScalarType {
       name: `MinLength${limit}`,
 
       serialize(value) {
-        value = type.serialize(value)
+        const serialized = type.serialize(value)
         Joi.assert(
-          value,
+          serialized,
           [Joi.string().min(limit), Joi.number().min(limit)],
           new TypeError(`Value beneath limit: ${limit}`)
         )
-        return value
+        return serialized
       },
 
       parseValue(value) {
@@ -59,13 +59,13 @@ export class GreaterThan extends GraphQLScalarType {
       name: `GreaterThan${limit}`,
 
       serialize(value) {
-        value = type.serialize(value)
+        const serialized = type.serialize(value)
         Joi.assert(
-          value,
+          serialized,
           Joi.number().greater(limit),
           new TypeError(`Value beneath limit: ${limit}`)
         )
-        return value
+        return serialized
       },
 
       parseValue(value) {
@@ -85,13 +85,13 @@ export class LessThan extends GraphQLScalarType {
       name: `LessThan${limit}`,
 
       serialize(value) {
-        value = type.serialize(value)
+        const serialized = type.serialize(value)
         Joi.assert(
-          value,
+          serialized,
           Joi.number().less(limit),
           new TypeError(`Value exceeds limit: ${limit}`)
         )
-        return value
+        return serialized
       },
 
       parseValue(value) {

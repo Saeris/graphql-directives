@@ -1,23 +1,15 @@
+import { gql } from "apollo-server"
 import { SchemaDirectiveVisitor } from "graphql-tools"
-import {
-  defaultFieldResolver,
-  DirectiveLocation,
-  GraphQLDirective,
-  GraphQLString
-} from "graphql"
+import { defaultFieldResolver, GraphQLString } from "graphql"
 import numeral from "numeral"
 
 export class formatNumber extends SchemaDirectiveVisitor {
-  static getDirectiveDeclaration(directiveName) {
-    return new GraphQLDirective({
-      name: directiveName,
-      locations: DirectiveLocation.FIELD_DEFINITION,
-      args: {
-        requires: {
-          defaultFormat: `0,0.0000`
-        }
-      }
-    })
+  static declaration() {
+    return gql`
+      directive @formatNumber(
+        defaultFormat: String! = "0,0.0000"
+      ) on FIELD_DEFINITION
+    `
   }
 
   visitFieldDefinition(field) {
@@ -28,7 +20,8 @@ export class formatNumber extends SchemaDirectiveVisitor {
 
     field.resolve = async function(source, { format, ...args }, context, info) {
       const result = await resolve.call(this, source, args, context, info)
-      return numeral(result).format(format || defaultFormat)
+      const transform = input => numeral(input).format(format || defaultFormat)
+      return Array.isArray(result) ? result.map(transform) : transform(result)
     }
 
     field.type = GraphQLString
