@@ -1,4 +1,4 @@
-import { gql } from "apollo-server"
+import gql from "graphql-tag"
 import { SchemaDirectiveVisitor } from "graphql-tools"
 import { defaultFieldResolver, GraphQLString } from "graphql"
 import lodash from "lodash"
@@ -15,7 +15,8 @@ const createStringDirective = method =>
       const { resolve = defaultFieldResolver } = field
       field.resolve = async function(...args) {
         const result = await resolve.apply(this, args)
-        const transform = input => (typeof input === `string` ? lodash[method](input) : input)
+        const transform = input =>
+          typeof input === `string` ? lodash[method](input) : input
         return Array.isArray(result) ? result.map(transform) : transform(result)
       }
 

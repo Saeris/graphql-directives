@@ -26,54 +26,54 @@
 
 ## Table of Contents
 
-  - [Installation](#installation)
-  - [Usage](#usage)
-  - [Example](#example)
-  - [Directives](#directives)
-    - [Currencies](#currencies)
-      - [\@formatCurrency](#formatcurrency)
-    - [Dates](#dates)
-      - [\@formatdate](#formatdate)
-    - [Numbers](#numbers)
-      - [\@formatNumber](#formatnumber)
-    - [Phone Numbers](#phone-numbers)
-      - [\@formatPhoneNumber](#formatphonenumber)
-    - [Strings](#strings)
-      - [\@camelCase](#camelcase)
-      - [\@capitalize](#capitalize)
-      - [\@deburr](#deburr)
-      - [\@kebabCase](#kebabcase)
-      - [\@lowerCase](#lowercase)
-      - [\@lowerFirst](#lowerfirst)
-      - [\@snakeCase](#snakecase)
-      - [\@toLower](#tolower)
-      - [\@toUpper](#toupper)
-      - [\@trim](#trim)
-      - [\@upperCase](#uppercase)
-      - [\@upperFirst](#upperfirst)
-    - [Measurements](#measurements)
-      - [\@converLength](#converlength)
-      - [\@convertSurfaceArea](#convertsurfacearea)
-      - [\@convertVolume](#convertvolume)
-      - [\@convertLiquidVolume](#convertliquidvolume)
-      - [\@convertAngle](#convertangle)
-      - [\@convertTime](#convertime)
-      - [\@convertMass](#convertmass)
-      - [\@convertTemperature](#converttemperature)
-      - [\@convertForce](#convertforce)
-      - [\@convertEnergy](#convertenergy)
-      - [\@convertPower](#convertpower)
-      - [\@convertPressure](#convertpressure)
-      - [\@convertBinary](#convertbinary)
-  - [Acknowledgements](#acknowledgements)
-  - [License](#license)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Example](#example)
+- [Directives](#directives)
+  - [Currencies](#currencies)
+    - [\@formatCurrency](#formatcurrency)
+  - [Dates](#dates)
+    - [\@formatdate](#formatdate)
+  - [Numbers](#numbers)
+    - [\@formatNumber](#formatnumber)
+  - [Phone Numbers](#phone-numbers)
+    - [\@formatPhoneNumber](#formatphonenumber)
+  - [Strings](#strings)
+    - [\@camelCase](#camelcase)
+    - [\@capitalize](#capitalize)
+    - [\@deburr](#deburr)
+    - [\@kebabCase](#kebabcase)
+    - [\@lowerCase](#lowercase)
+    - [\@lowerFirst](#lowerfirst)
+    - [\@snakeCase](#snakecase)
+    - [\@toLower](#tolower)
+    - [\@toUpper](#toupper)
+    - [\@trim](#trim)
+    - [\@upperCase](#uppercase)
+    - [\@upperFirst](#upperfirst)
+  - [Measurements](#measurements)
+    - [\@converLength](#converlength)
+    - [\@convertSurfaceArea](#convertsurfacearea)
+    - [\@convertVolume](#convertvolume)
+    - [\@convertLiquidVolume](#convertliquidvolume)
+    - [\@convertAngle](#convertangle)
+    - [\@convertTime](#convertime)
+    - [\@convertMass](#convertmass)
+    - [\@convertTemperature](#converttemperature)
+    - [\@convertForce](#convertforce)
+    - [\@convertEnergy](#convertenergy)
+    - [\@convertPower](#convertpower)
+    - [\@convertPressure](#convertpressure)
+    - [\@convertBinary](#convertbinary)
+- [Acknowledgements](#acknowledgements)
+- [License](#license)
 
 ## 📦 Installation
 
 ```bash
-npm install --save graphql @saeris/graphql-directives
+npm install --save graphql graphql-tag @saeris/graphql-directives
 # or
-yarn add graphql @saeris/graphql-directives
+yarn add graphql graphql-tag @saeris/graphql-directives
 ```
 
 ## 🔧 Usage
@@ -147,6 +147,7 @@ import { formatCurrency } from "@saeris/graphql-directives"
 ```
 
 Example Schema Usage:
+
 ```graphql
 type Example {
   # Int | Float => String
@@ -168,14 +169,15 @@ enum RoundingMode {
 ```
 
 Example Query Usage:
+
 ```graphql
-  query ExampleQuery {
-    getPerson {
-      # Raw => Default Format => Requested Format
-      # 1150 => $11.50 => EUR 11.5
-      hourlyRate(format: "USD0,0.0" currency: "EUR") # => EUR 11.5
-    }
+query ExampleQuery {
+  getPerson {
+    # Raw => Default Format => Requested Format
+    # 1150 => $11.50 => EUR 11.5
+    hourlyRate(format: "USD0,0.0", currency: "EUR") # => EUR 11.5
   }
+}
 ```
 
 <!-- prettier-ignore-start -->
@@ -185,11 +187,11 @@ Example Query Usage:
 > Taken from [dinero.js documentation](https://sarahdayan.github.io/dinero.js/module-Dinero.html#~toFormat)
 
 | Format         | Result Example  |
-|----------------|-----------------|
-| `$0,0.00`      | $5,000.50       |
-| `$0,0`         | $5,001          |
-| `$0`           | $5001           |
-| `$0.0`         | $5000.5         |
+| -------------- | --------------- |
+| `$0,0.00`      | \$5,000.50      |
+| `$0,0`         | \$5,001         |
+| `$0`           | \$5001          |
+| `$0.0`         | \$5000.5        |
 | `USD0,0.0`     | USD 5,000.5     |
 | `0,0.0 dollar` | 5,000.5 dollars |
 
@@ -209,6 +211,7 @@ import { formatDate } from "@saeris/graphql-directives"
 ```
 
 Example Schema Usage:
+
 ```graphql
 type Example {
   # Int | String => String
@@ -219,14 +222,15 @@ type Example {
 ```
 
 Example Query Usage:
+
 ```graphql
-  query ExampleQuery {
-    getPerson {
-      # Raw => Default Format => Requested Format
-      # 1549766240251 => February 9, 2019 => 18:37:20pm - February 9, 2019
-      birthDate(format: "H:mm:ssa - MMMM D, YYYY") # => 18:37:20pm - February 9, 2019
-    }
+query ExampleQuery {
+  getPerson {
+    # Raw => Default Format => Requested Format
+    # 1549766240251 => February 9, 2019 => 18:37:20pm - February 9, 2019
+    birthDate(format: "H:mm:ssa - MMMM D, YYYY") # => 18:37:20pm - February 9, 2019
   }
+}
 ```
 
 <!-- prettier-ignore-start -->
@@ -235,52 +239,52 @@ Example Query Usage:
 
 > Table taken from [date-fns documentation](https://date-fns.org/v1.30.1/docs/format)
 
-| Unit                    | Token   | Result Examples                  |
-|-------------------------|---------|----------------------------------|
-| Month                   | `M`     | 1, 2, ..., 12                    |
-|                         | `Mo`    | 1st, 2nd, ..., 12th              |
-|                         | `MM`    | 01, 02, ..., 12                  |
-|                         | `MMM`   | Jan, Feb, ..., Dec               |
-|                         | `MMMM`  | January, February, ..., December |
-| Quarter                 | `Q`     | 1, 2, 3, 4                       |
-|                         | `Qo`    | 1st, 2nd, 3rd, 4th               |
-| Day of month            | `D`     | 1, 2, ..., 31                    |
-|                         | `Do`    | 1st, 2nd, ..., 31st              |
-|                         | `DD`    | 01, 02, ..., 31                  |
-| Day of year             | `DDD`   | 1, 2, ..., 366                   |
-|                         | `DDDo`  | 1st, 2nd, ..., 366th             |
-|                         | `DDDD`  | 001, 002, ..., 366               |
-| Day of week             | `d`     | 0, 1, ..., 6                     |
-|                         | `do`    | 0th, 1st, ..., 6th               |
-|                         | `dd`    | Su, Mo, ..., Sa                  |
-|                         | `ddd`   | Sun, Mon, ..., Sat               |
-|                         | `dddd`  | Sunday, Monday, ..., Saturday    |
-| Day of ISO week         | `E`     | 1, 2, ..., 7                     |
-| ISO week                | `W`     | 1, 2, ..., 53                    |
-|                         | `Wo`    | 1st, 2nd, ..., 53rd              |
-|                         | `WW`    | 01, 02, ..., 53                  |
-| Year                    | `YY`    | 00, 01, ..., 99                  |
-|                         | `YYYY`  | 1900, 1901, ..., 2099            |
-| ISO week-numbering year | `GG`    | 00, 01, ..., 99                  |
-|                         | `GGGG`  | 1900, 1901, ..., 2099            |
-| AM/PM                   | `A`     | AM, PM                           |
-|                         | `a`     | am, pm                           |
-|                         | `aa`    | a.m., p.m.                       |
-| Hour                    | `H`     | 0, 1, ... 23                     |
-|                         | `HH`    | 00, 01, ... 23                   |
-|                         | `h`     | 1, 2, ..., 12                    |
-|                         | `hh`    | 01, 02, ..., 12                  |
-| Minute                  | `m`     | 0, 1, ..., 59                    |
-|                         | `mm`    | 00, 01, ..., 59                  |
-| Second                  | `s`     | 0, 1, ..., 59                    |
-|                         | `ss`    | 00, 01, ..., 59                  |
-| 1/10 of second          | `S`     | 0, 1, ..., 9                     |
-| 1/100 of second         | `SS`    | 00, 01, ..., 99                  |
-| Millisecond             | `SSS`   | 000, 001, ..., 999               |
-| Timezone                | `Z`     | -01:00, +00:00, ... +12:00       |
-|                         | `ZZ`    | -0100, +0000, ..., +1200         |
-| Seconds timestamp       | `X`     | 512969520                        |
-| Milliseconds timestamp  | `x`     | 512969520900                     |
+| Unit                    | Token  | Result Examples                  |
+| ----------------------- | ------ | -------------------------------- |
+| Month                   | `M`    | 1, 2, ..., 12                    |
+|                         | `Mo`   | 1st, 2nd, ..., 12th              |
+|                         | `MM`   | 01, 02, ..., 12                  |
+|                         | `MMM`  | Jan, Feb, ..., Dec               |
+|                         | `MMMM` | January, February, ..., December |
+| Quarter                 | `Q`    | 1, 2, 3, 4                       |
+|                         | `Qo`   | 1st, 2nd, 3rd, 4th               |
+| Day of month            | `D`    | 1, 2, ..., 31                    |
+|                         | `Do`   | 1st, 2nd, ..., 31st              |
+|                         | `DD`   | 01, 02, ..., 31                  |
+| Day of year             | `DDD`  | 1, 2, ..., 366                   |
+|                         | `DDDo` | 1st, 2nd, ..., 366th             |
+|                         | `DDDD` | 001, 002, ..., 366               |
+| Day of week             | `d`    | 0, 1, ..., 6                     |
+|                         | `do`   | 0th, 1st, ..., 6th               |
+|                         | `dd`   | Su, Mo, ..., Sa                  |
+|                         | `ddd`  | Sun, Mon, ..., Sat               |
+|                         | `dddd` | Sunday, Monday, ..., Saturday    |
+| Day of ISO week         | `E`    | 1, 2, ..., 7                     |
+| ISO week                | `W`    | 1, 2, ..., 53                    |
+|                         | `Wo`   | 1st, 2nd, ..., 53rd              |
+|                         | `WW`   | 01, 02, ..., 53                  |
+| Year                    | `YY`   | 00, 01, ..., 99                  |
+|                         | `YYYY` | 1900, 1901, ..., 2099            |
+| ISO week-numbering year | `GG`   | 00, 01, ..., 99                  |
+|                         | `GGGG` | 1900, 1901, ..., 2099            |
+| AM/PM                   | `A`    | AM, PM                           |
+|                         | `a`    | am, pm                           |
+|                         | `aa`   | a.m., p.m.                       |
+| Hour                    | `H`    | 0, 1, ... 23                     |
+|                         | `HH`   | 00, 01, ... 23                   |
+|                         | `h`    | 1, 2, ..., 12                    |
+|                         | `hh`   | 01, 02, ..., 12                  |
+| Minute                  | `m`    | 0, 1, ..., 59                    |
+|                         | `mm`   | 00, 01, ..., 59                  |
+| Second                  | `s`    | 0, 1, ..., 59                    |
+|                         | `ss`   | 00, 01, ..., 59                  |
+| 1/10 of second          | `S`    | 0, 1, ..., 9                     |
+| 1/100 of second         | `SS`   | 00, 01, ..., 99                  |
+| Millisecond             | `SSS`  | 000, 001, ..., 999               |
+| Timezone                | `Z`    | -01:00, +00:00, ... +12:00       |
+|                         | `ZZ`   | -0100, +0000, ..., +1200         |
+| Seconds timestamp       | `X`    | 512969520                        |
+| Milliseconds timestamp  | `x`    | 512969520900                     |
 
 </details>
 <!-- prettier-ignore-end -->
@@ -296,6 +300,7 @@ import { formatNumber } from "@saeris/graphql-directives"
 ```
 
 Example Schema Usage:
+
 ```graphql
 type Example {
   # Int | Float => String
@@ -306,14 +311,15 @@ type Example {
 ```
 
 Example Query Usage:
+
 ```graphql
-  query ExampleQuery {
-    getPerson {
-      # Raw => Default Format => Requested Format
-      # 11075.25 => 11,075.2500 => 11.1k
-      balance(format: "0.0a") # => 11.1k
-    }
+query ExampleQuery {
+  getPerson {
+    # Raw => Default Format => Requested Format
+    # 11075.25 => 11,075.2500 => 11.1k
+    balance(format: "0.0a") # => 11.1k
   }
+}
 ```
 
 <!-- prettier-ignore-start -->
@@ -323,69 +329,69 @@ Example Query Usage:
 > Tables taken from [numeral documentation](http://numeraljs.com/#format)
 
 **Numbers**
-| Number	    | Format	     | String        |
+| Number | Format | String |
 |-------------|--------------|---------------|
-| 10000       | `0,0.0000`   | 10,000.0000   |
-| 10000.23    | `0,0`        | 10,000        |
-| 10000.23    | `+0,0`       | +10,000       |
-| -10000      | `0,0.0`      | -10,000.0     |
-| 10000.1234  |	`0.000 `     | 10000.123     |
-| 100.1234	  | `00000`      | 00100         |
-| 1000.1234	  | `000000,0`   | 001,000       |
-| 10	        | `000.00`     | 010.00        |
-| 10000.1234	| `0[.]00000`  | 10000.12340   |
-| -10000	    | `(0,0.0000)` | (10,000.0000) |
-| -0.23	      | `.00 `       | -.23          |
-| -0.23	      | `(.00) `     | (.23)         |
-| 0.23	      | `0.00000`    | 0.23000       |
-| 0.23	      | `0.0[0000]`  | 0.23          |
-| 1230974	    | `0.0a`       | 1.2m          |
-| 1460	      | `0 a`        | 1 k           |
-| -104000	    | `0a`         | -104k         |
-| 1	          | `0o`         | 1st           |
-| 100	        | `0o` 	       | 100th         |
+| 10000 | `0,0.0000` | 10,000.0000 |
+| 10000.23 | `0,0` | 10,000 |
+| 10000.23 | `+0,0` | +10,000 |
+| -10000 | `0,0.0` | -10,000.0 |
+| 10000.1234 | `0.000` | 10000.123 |
+| 100.1234 | `00000` | 00100 |
+| 1000.1234 | `000000,0` | 001,000 |
+| 10 | `000.00` | 010.00 |
+| 10000.1234 | `0[.]00000` | 10000.12340 |
+| -10000 | `(0,0.0000)` | (10,000.0000) |
+| -0.23 | `.00` | -.23 |
+| -0.23 | `(.00)` | (.23) |
+| 0.23 | `0.00000` | 0.23000 |
+| 0.23 | `0.0[0000]` | 0.23 |
+| 1230974 | `0.0a` | 1.2m |
+| 1460 | `0 a` | 1 k |
+| -104000 | `0a` | -104k |
+| 1 | `0o` | 1st |
+| 100 | `0o` | 100th |
 
 **Currency**
-| Number	  | Format	     | String      |
+| Number | Format | String |
 |-----------|--------------|-------------|
-| 1000.234	| `$0,0.00`	   | $1,000.23   |
-| 1000.2	  | `0,0[.]00 $` | 1,000.20 $  |
-| 1001	    | `$ 0,0[.]00` | $ 1,001     |
-| -1000.234	| `($0,0)`	   | ($1,000)    |
-| -1000.234 |	`$0.00`	     | -$1000.23   |
-| 1230974	  | `($ 0.00 a)` | $ 1.23 m    |
+| 1000.234 | `$0,0.00` | \$1,000.23 |
+| 1000.2 | `0,0[.]00 $` | 1,000.20 \$ |
+| 1001 | `$ 0,0[.]00` | \$ 1,001 |
+| -1000.234 | `($0,0)` | (\$1,000) |
+| -1000.234 | `$0.00` | -\$1000.23 |
+| 1230974 | `($ 0.00 a)` | \$ 1.23 m |
 
 **Bytes**
-| Number	      | Format	   | String     |
+| Number | Format | String |
 |---------------|------------|------------|
-| 100	          | `0b`	     | 100B       |
-| 1024	        | `0b`	     | 1KB        |
-| 2048	        | `0 ib`	   | 2 KiB      |
-| 3072	        | `0.0 b`	   | 3.1 KB     |
-| 7884486213	  | `0.00b`	   | 7.88GB     |
-| 3467479682787 |	`0.000 ib` | 3.154 TiB  |
+| 100 | `0b` | 100B |
+| 1024 | `0b` | 1KB |
+| 2048 | `0 ib` | 2 KiB |
+| 3072 | `0.0 b` | 3.1 KB |
+| 7884486213 | `0.00b` | 7.88GB |
+| 3467479682787 | `0.000 ib` | 3.154 TiB |
 
 **Percentages**
-| Number	      | Format	     | String    |
+| Number | Format | String |
 |---------------|--------------|-----------|
-| 1	            | `0%`	       | 100%      |
-| 0.974878234	  | `0.000%`	   | 97.488%   |
-| -0.43	        | `0 %`	       | -43 %     |
-| 0.43	        | `(0.000 %)`	 | 43.000 %  |
+| 1 | `0%` | 100% |
+| 0.974878234 | `0.000%` | 97.488% |
+| -0.43 | `0 %` | -43 % |
+| 0.43 | `(0.000 %)` | 43.000 % |
 
 **Time**
-| Number	| Format	   | String   |
+| Number | Format | String |
 |---------|------------|----------|
-| 25      | `00:00:00` | 0:00:25  |
-| 238	    | `00:00:00` | 0:03:58  |
-| 63846   | `00:00:00` | 17:44:06 |
+| 25 | `00:00:00` | 0:00:25 |
+| 238 | `00:00:00` | 0:03:58 |
+| 63846 | `00:00:00` | 17:44:06 |
 
 **Exponential**
-| Number	      | Format	    | String   |
+| Number | Format | String |
 |---------------|-------------|----------|
-| 1123456789    | `0,0e+0`    | 1e+9     |
-| 12398734.202  | `0.00e+0`	  | 1.24e+7  |
-| 0.000123987   | `0.000e+0`	| 1.240e-4 |
+| 1123456789 | `0,0e+0` | 1e+9 |
+| 12398734.202 | `0.00e+0` | 1.24e+7 |
+| 0.000123987 | `0.000e+0` | 1.240e-4 |
 
 </details>
 <!-- prettier-ignore-end -->
@@ -401,6 +407,7 @@ import { formatPhoneNumber } from "@saeris/graphql-directives"
 ```
 
 Example Schema Usage:
+
 ```graphql
 type Example {
   # String => String
@@ -419,27 +426,29 @@ enum PhoneFormats {
 ```
 
 Example Query Usage:
+
 ```graphql
-  query ExampleQuery {
-    getPerson {
-      # Raw => Default Format => Requested Format
-      # +17895551234 => +1 789 555 1234 => (789) 555-1234
-      phoneNumber(format: National) # => (789) 555-1234
-    }
+query ExampleQuery {
+  getPerson {
+    # Raw => Default Format => Requested Format
+    # +17895551234 => +1 789 555 1234 => (789) 555-1234
+    phoneNumber(format: National) # => (789) 555-1234
   }
+}
 ```
+
 <!-- prettier-ignore-start -->
 <details>
 <summary>Additional Formatting Options:</summary>
 
 > Table taken from [libphonenumber-js documentation](https://github.com/catamphetamine/libphonenumber-js#formatformat-string-options)
 
-| Format          | Example                   |
-|-----------------|---------------------------|
-| `National`      | (213) 373-4253            |
-| `International` | +1 213 373 4253           |
-| `E164`          | +12133734253              |
-| `RFC3966`       | tel:+12133734253;ext=123  |
+| Format          | Example                  |
+| --------------- | ------------------------ |
+| `National`      | (213) 373-4253           |
+| `International` | +1 213 373 4253          |
+| `E164`          | +12133734253             |
+| `RFC3966`       | tel:+12133734253;ext=123 |
 
 </details>
 <!-- prettier-ignore-end -->
@@ -459,6 +468,7 @@ import { camelCase } from "@saeris/graphql-directives"
 ```
 
 Example Schema Usage:
+
 ```graphql
 type Example {
   # String => String
@@ -467,16 +477,17 @@ type Example {
 ```
 
 Example Query Usage:
+
 ```graphql
-  query ExampleQuery {
-    getMessage {
-      # Raw => Formatted String
-      # Foo Bar => fooBar
-      # --foo-bar-- => fooBar
-      # __FOO_BAR__ => fooBar
-      message # => fooBar
-    }
+query ExampleQuery {
+  getMessage {
+    # Raw => Formatted String
+    # Foo Bar => fooBar
+    # --foo-bar-- => fooBar
+    # __FOO_BAR__ => fooBar
+    message # => fooBar
   }
+}
 ```
 
 #### \@capitalize
@@ -488,6 +499,7 @@ import { capitalize } from "@saeris/graphql-directives"
 ```
 
 Example Schema Usage:
+
 ```graphql
 type Example {
   # String => String
@@ -496,14 +508,15 @@ type Example {
 ```
 
 Example Query Usage:
+
 ```graphql
-  query ExampleQuery {
-    getMessage {
-      # Raw => Formatted String
-      # FRED => Fred
-      message # => Fred
-    }
+query ExampleQuery {
+  getMessage {
+    # Raw => Formatted String
+    # FRED => Fred
+    message # => Fred
   }
+}
 ```
 
 #### \@deburr
@@ -515,6 +528,7 @@ import { deburr } from "@saeris/graphql-directives"
 ```
 
 Example Schema Usage:
+
 ```graphql
 type Example {
   # String => String
@@ -523,14 +537,15 @@ type Example {
 ```
 
 Example Query Usage:
+
 ```graphql
-  query ExampleQuery {
-    getMessage {
-      # Raw => Formatted String
-      # déjà vu => deja vu
-      message # => deja vu
-    }
+query ExampleQuery {
+  getMessage {
+    # Raw => Formatted String
+    # déjà vu => deja vu
+    message # => deja vu
   }
+}
 ```
 
 #### \@kebabCase
@@ -542,6 +557,7 @@ import { kebabCase } from "@saeris/graphql-directives"
 ```
 
 Example Schema Usage:
+
 ```graphql
 type Example {
   # String => String
@@ -550,16 +566,17 @@ type Example {
 ```
 
 Example Query Usage:
+
 ```graphql
-  query ExampleQuery {
-    getMessage {
-      # Raw => Formatted String
-      # Foo Bar => foo-bar
-      # fooBar => foo-bar
-      # __FOO_BAR__ => foo-bar
-      message # => foo-bar
-    }
+query ExampleQuery {
+  getMessage {
+    # Raw => Formatted String
+    # Foo Bar => foo-bar
+    # fooBar => foo-bar
+    # __FOO_BAR__ => foo-bar
+    message # => foo-bar
   }
+}
 ```
 
 #### \@lowerCase
@@ -571,6 +588,7 @@ import { lowerCase } from "@saeris/graphql-directives"
 ```
 
 Example Schema Usage:
+
 ```graphql
 type Example {
   # String => String
@@ -579,16 +597,17 @@ type Example {
 ```
 
 Example Query Usage:
+
 ```graphql
-  query ExampleQuery {
-    getMessage {
-      # Raw => Formatted String
-      # --Foo-Bar-- => foo bar
-      # fooBar => foo bar
-      # __FOO_BAR__ => foo bar
-      message # => foo bar
-    }
+query ExampleQuery {
+  getMessage {
+    # Raw => Formatted String
+    # --Foo-Bar-- => foo bar
+    # fooBar => foo bar
+    # __FOO_BAR__ => foo bar
+    message # => foo bar
   }
+}
 ```
 
 #### \@lowerFirst
@@ -600,6 +619,7 @@ import { lowerFirst } from "@saeris/graphql-directives"
 ```
 
 Example Schema Usage:
+
 ```graphql
 type Example {
   # String => String
@@ -608,15 +628,16 @@ type Example {
 ```
 
 Example Query Usage:
+
 ```graphql
-  query ExampleQuery {
-    getMessage {
-      # Raw => Formatted String
-      # Fred => fred
-      # FRED => fRED
-      message # => fRED
-    }
+query ExampleQuery {
+  getMessage {
+    # Raw => Formatted String
+    # Fred => fred
+    # FRED => fRED
+    message # => fRED
   }
+}
 ```
 
 #### \@snakeCase
@@ -628,6 +649,7 @@ import { snakeCase } from "@saeris/graphql-directives"
 ```
 
 Example Schema Usage:
+
 ```graphql
 type Example {
   # String => String
@@ -636,16 +658,17 @@ type Example {
 ```
 
 Example Query Usage:
+
 ```graphql
-  query ExampleQuery {
-    getMessage {
-      # Raw => Formatted String
-      # Foo Bar => foo_bar
-      # fooBar => foo_bar
-      # --FOO-BAR-- => foo_bar
-      message # => foo_bar
-    }
+query ExampleQuery {
+  getMessage {
+    # Raw => Formatted String
+    # Foo Bar => foo_bar
+    # fooBar => foo_bar
+    # --FOO-BAR-- => foo_bar
+    message # => foo_bar
   }
+}
 ```
 
 #### \@toLower
@@ -657,6 +680,7 @@ import { toLower } from "@saeris/graphql-directives"
 ```
 
 Example Schema Usage:
+
 ```graphql
 type Example {
   # String => String
@@ -665,16 +689,17 @@ type Example {
 ```
 
 Example Query Usage:
+
 ```graphql
-  query ExampleQuery {
-    getMessage {
-      # Raw => Formatted String
-      # --Foo-Bar-- => --foo-bar--
-      # fooBar => foobar
-      # __FOO_BAR__ => __foo_bar__
-      message # => foobar
-    }
+query ExampleQuery {
+  getMessage {
+    # Raw => Formatted String
+    # --Foo-Bar-- => --foo-bar--
+    # fooBar => foobar
+    # __FOO_BAR__ => __foo_bar__
+    message # => foobar
   }
+}
 ```
 
 #### \@toUpper
@@ -686,6 +711,7 @@ import { toUpper } from "@saeris/graphql-directives"
 ```
 
 Example Schema Usage:
+
 ```graphql
 type Example {
   # String => String
@@ -694,16 +720,17 @@ type Example {
 ```
 
 Example Query Usage:
+
 ```graphql
-  query ExampleQuery {
-    getMessage {
-      # Raw => Formatted String
-      # --foo-bar-- => --FOO-BAR--
-      # fooBar => FOOBAR
-      # __foo_bar__ => __FOO_BAR__
-      message # => FOOBAR
-    }
+query ExampleQuery {
+  getMessage {
+    # Raw => Formatted String
+    # --foo-bar-- => --FOO-BAR--
+    # fooBar => FOOBAR
+    # __foo_bar__ => __FOO_BAR__
+    message # => FOOBAR
   }
+}
 ```
 
 #### \@trim
@@ -715,6 +742,7 @@ import { trim } from "@saeris/graphql-directives"
 ```
 
 Example Schema Usage:
+
 ```graphql
 type Example {
   # String => String
@@ -723,14 +751,15 @@ type Example {
 ```
 
 Example Query Usage:
+
 ```graphql
-  query ExampleQuery {
-    getMessage {
-      # Raw => Formatted String
-      # '  abc  ' => 'abc'
-      message # => abc
-    }
+query ExampleQuery {
+  getMessage {
+    # Raw => Formatted String
+    # '  abc  ' => 'abc'
+    message # => abc
   }
+}
 ```
 
 #### \@upperCase
@@ -742,6 +771,7 @@ import { upperCase } from "@saeris/graphql-directives"
 ```
 
 Example Schema Usage:
+
 ```graphql
 type Example {
   # String => String
@@ -750,16 +780,17 @@ type Example {
 ```
 
 Example Query Usage:
+
 ```graphql
-  query ExampleQuery {
-    getMessage {
-      # Raw => Formatted String
-      # --foo-bar-- => FOO BAR
-      # fooBar => FOO BAR
-      # __foo_bar__ => FOO BAR
-      message # => FOO BAR
-    }
+query ExampleQuery {
+  getMessage {
+    # Raw => Formatted String
+    # --foo-bar-- => FOO BAR
+    # fooBar => FOO BAR
+    # __foo_bar__ => FOO BAR
+    message # => FOO BAR
   }
+}
 ```
 
 #### \@upperFirst
@@ -771,6 +802,7 @@ import { upperFirst } from "@saeris/graphql-directives"
 ```
 
 Example Schema Usage:
+
 ```graphql
 type Example {
   # String => String
@@ -779,15 +811,16 @@ type Example {
 ```
 
 Example Query Usage:
+
 ```graphql
-  query ExampleQuery {
-    getMessage {
-      # Raw => Formatted String
-      # fred => Fred
-      # fRED => FRED
-      message # => Fred
-    }
+query ExampleQuery {
+  getMessage {
+    # Raw => Formatted String
+    # fred => Fred
+    # fRED => FRED
+    message # => Fred
   }
+}
 ```
 
 ### 📐 Measurements
@@ -804,76 +837,76 @@ Each conversion directive includes a GraphQL Enum with all of the valid values t
 
 > Tables taken from [mathjs documentation](http://mathjs.org/docs/datatypes/units.html#reference)
 
-| Base	| Unit |
-|-------|------|
-| **Length** |	meter (m), inch (in), foot (ft), yard (yd), mile (mi), link (li), rod (rd), chain (ch), angstrom, mil |
-| **Surface area** |	m2, sqin, sqft, sqyd, sqmi, sqrd, sqch, sqmil, acre, hectare |
-| **Volume** |	m3, litre (l, L, lt, liter), cc, cuin, cuft, cuyd, teaspoon, tablespoon |
-| **Liquid volume** |	minim (min), fluiddram (fldr), fluidounce (floz), gill (gi), cup (cp), pint (pt), quart (qt), gallon (gal), beerbarrel (bbl), oilbarrel (obl), hogshead, drop (gtt) |
-| **Angles** | rad (radian), deg (degree), grad (gradian), cycle, arcsec (arcsecond), arcmin (arcminute) |
-| **Time** | second (s, secs, seconds), minute (mins, minutes), hour (h, hr, hrs, hours), day (days), week (weeks), month (months), year (years), decade (decades), century (centuries), millennium (millennia) |
-| **Mass** | gram(g), tonne, ton, grain (gr), dram (dr), ounce (oz), poundmass (lbm, lb, lbs), hundredweight (cwt), stick, stone |
-| **Temperature** |	kelvin (K), celsius (degC), fahrenheit (degF), rankine (degR) |
-| **Force** |	newton (N), dyne (dyn), poundforce (lbf), kip |
-| **Energy** |	joule (J), erg, Wh, BTU, electronvolt (eV) |
-| **Power**	| watt (W), hp |
-| **Pressure** |	Pa, psi, atm, torr, bar, mmHg, mmH2O, cmH2O |
-| **Binary** |	bit (b), byte (B) |
+| Base              | Unit                                                                                                                                                                                               |
+| ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Length**        | meter (m), inch (in), foot (ft), yard (yd), mile (mi), link (li), rod (rd), chain (ch), angstrom, mil                                                                                              |
+| **Surface area**  | m2, sqin, sqft, sqyd, sqmi, sqrd, sqch, sqmil, acre, hectare                                                                                                                                       |
+| **Volume**        | m3, litre (l, L, lt, liter), cc, cuin, cuft, cuyd, teaspoon, tablespoon                                                                                                                            |
+| **Liquid volume** | minim (min), fluiddram (fldr), fluidounce (floz), gill (gi), cup (cp), pint (pt), quart (qt), gallon (gal), beerbarrel (bbl), oilbarrel (obl), hogshead, drop (gtt)                                |
+| **Angles**        | rad (radian), deg (degree), grad (gradian), cycle, arcsec (arcsecond), arcmin (arcminute)                                                                                                          |
+| **Time**          | second (s, secs, seconds), minute (mins, minutes), hour (h, hr, hrs, hours), day (days), week (weeks), month (months), year (years), decade (decades), century (centuries), millennium (millennia) |
+| **Mass**          | gram(g), tonne, ton, grain (gr), dram (dr), ounce (oz), poundmass (lbm, lb, lbs), hundredweight (cwt), stick, stone                                                                                |
+| **Temperature**   | kelvin (K), celsius (degC), fahrenheit (degF), rankine (degR)                                                                                                                                      |
+| **Force**         | newton (N), dyne (dyn), poundforce (lbf), kip                                                                                                                                                      |
+| **Energy**        | joule (J), erg, Wh, BTU, electronvolt (eV)                                                                                                                                                         |
+| **Power**         | watt (W), hp                                                                                                                                                                                       |
+| **Pressure**      | Pa, psi, atm, torr, bar, mmHg, mmH2O, cmH2O                                                                                                                                                        |
+| **Binary**        | bit (b), byte (B)                                                                                                                                                                                  |
 
 > Note: Frequency, Electric Current, Amount of Substance, and Luminous Intensity are not currently included as they have only a single unit of measurement inside of mathjs.
 
 Prefixes
 The following decimal prefixes are available.
 
-| Name	| Abbreviation | Value |
-|-------|--------------|-------|
-| deca	| da	         | 1e1   |
-| hecto	| h	           | 1e2   |
-| kilo	| k	           | 1e3   |
-| mega	| M	           | 1e6   |
-| giga	| G	           | 1e9   |
-| tera	| T	           | 1e12  |
-| peta	| P	           | 1e15  |
-| exa	  | E	           | 1e18  |
-| zetta	| Z	           | 1e21  |
-| yotta	| Y	           | 1e24  |
+| Name  | Abbreviation | Value |
+| ----- | ------------ | ----- |
+| deca  | da           | 1e1   |
+| hecto | h            | 1e2   |
+| kilo  | k            | 1e3   |
+| mega  | M            | 1e6   |
+| giga  | G            | 1e9   |
+| tera  | T            | 1e12  |
+| peta  | P            | 1e15  |
+| exa   | E            | 1e18  |
+| zetta | Z            | 1e21  |
+| yotta | Y            | 1e24  |
 
-| Name	| Abbreviation | Value |
-|-------|--------------|-------|
-| deci	| d	           | 1e-1  |
-| centi	| c	           | 1e-2  |
-| milli	| m	           | 1e-3  |
-| micro	| u	           | 1e-6  |
-| nano	| n	           | 1e-9  |
-| pico	| p	           | 1e-12 |
-| femto	| f	           | 1e-15 |
-| atto	| a	           | 1e-18 |
-| zepto	| z	           | 1e-21 |
-| yocto	| y	           | 1e-24 |
+| Name  | Abbreviation | Value |
+| ----- | ------------ | ----- |
+| deci  | d            | 1e-1  |
+| centi | c            | 1e-2  |
+| milli | m            | 1e-3  |
+| micro | u            | 1e-6  |
+| nano  | n            | 1e-9  |
+| pico  | p            | 1e-12 |
+| femto | f            | 1e-15 |
+| atto  | a            | 1e-18 |
+| zepto | z            | 1e-21 |
+| yocto | y            | 1e-24 |
 
 The following binary prefixes are available. They can be used with units bit (b) and byte (B).
 
-| Name	| Abbreviation | Value  |
-|-------|--------------|--------|
-| kibi	| Ki	         | 1024   |
-| mebi	| Mi	         | 1024^2 |
-| gibi	| Gi	         | 1024^3 |
-| tebi	| Ti	         | 1024^4 |
-| pebi	| Pi	         | 1024^5 |
-| exi	  | Ei	         | 1024^6 |
-| zebi	| Zi	         | 1024^7 |
-| yobi	| Yi	         | 1024^8 |
+| Name | Abbreviation | Value  |
+| ---- | ------------ | ------ |
+| kibi | Ki           | 1024   |
+| mebi | Mi           | 1024^2 |
+| gibi | Gi           | 1024^3 |
+| tebi | Ti           | 1024^4 |
+| pebi | Pi           | 1024^5 |
+| exi  | Ei           | 1024^6 |
+| zebi | Zi           | 1024^7 |
+| yobi | Yi           | 1024^8 |
 
-| Name	| Abbreviation | Value |
-|-------|--------------|-------|
-| kilo	| k	           | 1e3   |
-| mega	| M	           | 1e6   |
-| giga	| G	           | 1e9   |
-| tera	| T	           | 1e12  |
-| peta	| P	           | 1e15  |
-| exa	  | E	           | 1e18  |
-| zetta	| Z	           | 1e21  |
-| yotta	| Y	           | 1e24  |
+| Name  | Abbreviation | Value |
+| ----- | ------------ | ----- |
+| kilo  | k            | 1e3   |
+| mega  | M            | 1e6   |
+| giga  | G            | 1e9   |
+| tera  | T            | 1e12  |
+| peta  | P            | 1e15  |
+| exa   | E            | 1e18  |
+| zetta | Z            | 1e21  |
+| yotta | Y            | 1e24  |
 
 </details>
 <!-- prettier-ignore-end -->
@@ -887,6 +920,7 @@ import { convertLength } from "@saeris/graphql-directives"
 ```
 
 Example Schema Usage:
+
 ```graphql
 type Example {
   # Int | Float => String
@@ -901,14 +935,15 @@ type Example {
 ```
 
 Example Query Usage:
+
 ```graphql
-  query ExampleQuery {
-    getPerson {
-      # Raw => Original Unit => Requested Unit
-      # 70.5 => 70.5 inches => 5.875 feet
-      height(convertTo: feet) # => 5.875 feet
-    }
+query ExampleQuery {
+  getPerson {
+    # Raw => Original Unit => Requested Unit
+    # 70.5 => 70.5 inches => 5.875 feet
+    height(convertTo: feet) # => 5.875 feet
   }
+}
 ```
 
 #### \@convertSurfaceArea
@@ -920,6 +955,7 @@ import { convertSurfaceArea } from "@saeris/graphql-directives"
 ```
 
 Example Schema Usage:
+
 ```graphql
 type Example {
   # Int | Float => String
@@ -934,14 +970,15 @@ type Example {
 ```
 
 Example Query Usage:
+
 ```graphql
-  query ExampleQuery {
-    getPerson {
-      # Raw => Original Unit => Requested Unit
-      # 25.75 => 25.75 sqft => 2.3922532800000003 m2
-      roomDimensions(convertTo: m2) # => 2.3922532800000003 m2
-    }
+query ExampleQuery {
+  getPerson {
+    # Raw => Original Unit => Requested Unit
+    # 25.75 => 25.75 sqft => 2.3922532800000003 m2
+    roomDimensions(convertTo: m2) # => 2.3922532800000003 m2
   }
+}
 ```
 
 #### \@convertVolume
@@ -953,6 +990,7 @@ import { convertVolume } from "@saeris/graphql-directives"
 ```
 
 Example Schema Usage:
+
 ```graphql
 type Example {
   # Int | Float => String
@@ -967,14 +1005,15 @@ type Example {
 ```
 
 Example Query Usage:
+
 ```graphql
-  query ExampleQuery {
-    getPerson {
-      # Raw => Original Unit => Requested Unit
-      # 2772 => 2772 cuin => 45.424941407999995 litre
-      bagSize(convertTo: litre) # => 45.424941407999995 litre
-    }
+query ExampleQuery {
+  getPerson {
+    # Raw => Original Unit => Requested Unit
+    # 2772 => 2772 cuin => 45.424941407999995 litre
+    bagSize(convertTo: litre) # => 45.424941407999995 litre
   }
+}
 ```
 
 #### \@convertLiquidVolume
@@ -986,6 +1025,7 @@ import { convertLiquidVolume } from "@saeris/graphql-directives"
 ```
 
 Example Schema Usage:
+
 ```graphql
 type Example {
   # Int | Float => String
@@ -1000,14 +1040,15 @@ type Example {
 ```
 
 Example Query Usage:
+
 ```graphql
-  query ExampleQuery {
-    getPerson {
-      # Raw => Original Unit => Requested Unit
-      # 21.125 => 21.125 fluidounce => 2.6406254464508376 cup
-      coffeeConsumed(convertTo: cup) # => 2.6406254464508376 cup
-    }
+query ExampleQuery {
+  getPerson {
+    # Raw => Original Unit => Requested Unit
+    # 21.125 => 21.125 fluidounce => 2.6406254464508376 cup
+    coffeeConsumed(convertTo: cup) # => 2.6406254464508376 cup
   }
+}
 ```
 
 #### \@convertAngle
@@ -1019,6 +1060,7 @@ import { convertAngle } from "@saeris/graphql-directives"
 ```
 
 Example Schema Usage:
+
 ```graphql
 type Example {
   # Int | Float => String
@@ -1033,14 +1075,15 @@ type Example {
 ```
 
 Example Query Usage:
+
 ```graphql
-  query ExampleQuery {
-    getPerson {
-      # Raw => Original Unit => Requested Unit
-      # 21.125 => 21.125 fluidounce => 2.6406254464508376 cup
-      trajectory(convertTo: rad) # => 2.6406254464508376 cup
-    }
+query ExampleQuery {
+  getPerson {
+    # Raw => Original Unit => Requested Unit
+    # 21.125 => 21.125 fluidounce => 2.6406254464508376 cup
+    trajectory(convertTo: rad) # => 2.6406254464508376 cup
   }
+}
 ```
 
 #### \@convertTime
@@ -1052,6 +1095,7 @@ import { convertTime } from "@saeris/graphql-directives"
 ```
 
 Example Schema Usage:
+
 ```graphql
 type Example {
   # Int | Float => String
@@ -1066,14 +1110,15 @@ type Example {
 ```
 
 Example Query Usage:
+
 ```graphql
-  query ExampleQuery {
-    getPerson {
-      # Raw => Original Unit => Requested Unit
-      # 21 => 21 years => 7670.25 days
-      age(convertTo: days) # => 7670.25 days
-    }
+query ExampleQuery {
+  getPerson {
+    # Raw => Original Unit => Requested Unit
+    # 21 => 21 years => 7670.25 days
+    age(convertTo: days) # => 7670.25 days
   }
+}
 ```
 
 #### \@convertMass
@@ -1085,6 +1130,7 @@ import { convertTime } from "@saeris/graphql-directives"
 ```
 
 Example Schema Usage:
+
 ```graphql
 type Example {
   # Int | Float => String
@@ -1099,14 +1145,15 @@ type Example {
 ```
 
 Example Query Usage:
+
 ```graphql
-  query ExampleQuery {
-    getPerson {
-      # Raw => Original Unit => Requested Unit
-      # 21 => 21 years => 7670.25 days
-      weight(convertTo: gram) # => 7670.25 days
-    }
+query ExampleQuery {
+  getPerson {
+    # Raw => Original Unit => Requested Unit
+    # 21 => 21 years => 7670.25 days
+    weight(convertTo: gram) # => 7670.25 days
   }
+}
 ```
 
 #### \@convertTemperature
@@ -1118,6 +1165,7 @@ import { convertTemperature } from "@saeris/graphql-directives"
 ```
 
 Example Schema Usage:
+
 ```graphql
 type Example {
   # Int | Float => String
@@ -1132,14 +1180,15 @@ type Example {
 ```
 
 Example Query Usage:
+
 ```graphql
-  query ExampleQuery {
-    getPerson {
-      # Raw => Original Unit => Requested Unit
-      # 21 => 21 years => 7670.25 days
-      temperature(convertTo: degC) # => 7670.25 days
-    }
+query ExampleQuery {
+  getPerson {
+    # Raw => Original Unit => Requested Unit
+    # 21 => 21 years => 7670.25 days
+    temperature(convertTo: degC) # => 7670.25 days
   }
+}
 ```
 
 #### \@convertForce
@@ -1151,6 +1200,7 @@ import { convertForce } from "@saeris/graphql-directives"
 ```
 
 Example Schema Usage:
+
 ```graphql
 type Example {
   # Int | Float => String
@@ -1165,14 +1215,15 @@ type Example {
 ```
 
 Example Query Usage:
+
 ```graphql
-  query ExampleQuery {
-    getPerson {
-      # Raw => Original Unit => Requested Unit
-      # 21 => 21 years => 7670.25 days
-      temperature(convertTo: degC) # => 7670.25 days
-    }
+query ExampleQuery {
+  getPerson {
+    # Raw => Original Unit => Requested Unit
+    # 21 => 21 years => 7670.25 days
+    temperature(convertTo: degC) # => 7670.25 days
   }
+}
 ```
 
 #### \@convertEnergy
@@ -1184,6 +1235,7 @@ import { convertEnergy } from "@saeris/graphql-directives"
 ```
 
 Example Schema Usage:
+
 ```graphql
 type Example {
   # Int | Float => String
@@ -1198,14 +1250,15 @@ type Example {
 ```
 
 Example Query Usage:
+
 ```graphql
-  query ExampleQuery {
-    getPerson {
-      # Raw => Original Unit => Requested Unit
-      # 21 => 21 years => 7670.25 days
-      temperature(convertTo: degC) # => 7670.25 days
-    }
+query ExampleQuery {
+  getPerson {
+    # Raw => Original Unit => Requested Unit
+    # 21 => 21 years => 7670.25 days
+    temperature(convertTo: degC) # => 7670.25 days
   }
+}
 ```
 
 #### \@convertPower
@@ -1217,6 +1270,7 @@ import { convertPower } from "@saeris/graphql-directives"
 ```
 
 Example Schema Usage:
+
 ```graphql
 type Example {
   # Int | Float => String
@@ -1231,14 +1285,15 @@ type Example {
 ```
 
 Example Query Usage:
+
 ```graphql
-  query ExampleQuery {
-    getPerson {
-      # Raw => Original Unit => Requested Unit
-      # 21 => 21 years => 7670.25 days
-      temperature(convertTo: degC) # => 7670.25 days
-    }
+query ExampleQuery {
+  getPerson {
+    # Raw => Original Unit => Requested Unit
+    # 21 => 21 years => 7670.25 days
+    temperature(convertTo: degC) # => 7670.25 days
   }
+}
 ```
 
 #### \@convertPressure
@@ -1250,6 +1305,7 @@ import { convertPressure } from "@saeris/graphql-directives"
 ```
 
 Example Schema Usage:
+
 ```graphql
 type Example {
   # Int | Float => String
@@ -1264,14 +1320,15 @@ type Example {
 ```
 
 Example Query Usage:
+
 ```graphql
-  query ExampleQuery {
-    getPerson {
-      # Raw => Original Unit => Requested Unit
-      # 21 => 21 years => 7670.25 days
-      temperature(convertTo: degC) # => 7670.25 days
-    }
+query ExampleQuery {
+  getPerson {
+    # Raw => Original Unit => Requested Unit
+    # 21 => 21 years => 7670.25 days
+    temperature(convertTo: degC) # => 7670.25 days
   }
+}
 ```
 
 #### \@convertBinary
@@ -1283,6 +1340,7 @@ import { convertBinary } from "@saeris/graphql-directives"
 ```
 
 Example Schema Usage:
+
 ```graphql
 type Example {
   # Int => String
@@ -1297,14 +1355,15 @@ type Example {
 ```
 
 Example Query Usage:
+
 ```graphql
-  query ExampleQuery {
-    getPerson {
-      # Raw => Original Unit => Requested Unit
-      # 1024 => 1024 bytes => 78192 bits
-      diskSpace(convertTo: bits) # => 8192 bits
-    }
+query ExampleQuery {
+  getPerson {
+    # Raw => Original Unit => Requested Unit
+    # 1024 => 1024 bytes => 78192 bits
+    diskSpace(convertTo: bits) # => 8192 bits
   }
+}
 ```
 
 ## 📣 Acknowledgements

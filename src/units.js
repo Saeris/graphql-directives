@@ -1,4 +1,4 @@
-import { gql } from "apollo-server"
+import gql from "graphql-tag"
 import { SchemaDirectiveVisitor } from "graphql-tools"
 import { defaultFieldResolver, GraphQLString, GraphQLBoolean } from "graphql"
 import * as math from "mathjs"
@@ -21,14 +21,26 @@ const createUnitDirective = (unit, baseEnum) =>
       const { resolve = defaultFieldResolver } = field
       const { originalUnit, defaultRaw } = this.args
 
-      field.args.push({ name: `convertTo`, type: getTypeMap(baseEnum)[`${unit}TypesEnum`] })
+      field.args.push({
+        name: `convertTo`,
+        type: getTypeMap(baseEnum)[`${unit}TypesEnum`]
+      })
       field.args.push({ name: `raw`, type: GraphQLBoolean })
 
-      field.resolve = async function(source, { convertTo, raw, ...args }, context, info) {
+      field.resolve = async function(
+        source,
+        { convertTo, raw, ...args },
+        context,
+        info
+      ) {
         const result = await resolve.call(this, source, args, context, info)
         const transform = input => {
-          const value = math.unit(input, originalUnit).to(convertTo || originalUnit)
-          return (raw || defaultRaw) ? value.toNumeric(convertTo || originalUnit) : value.toString()
+          const value = math
+            .unit(input, originalUnit)
+            .to(convertTo || originalUnit)
+          return raw || defaultRaw
+            ? value.toNumeric(convertTo || originalUnit)
+            : value.toString()
         }
         return Array.isArray(result) ? result.map(transform) : transform(result)
       }
@@ -38,62 +50,75 @@ const createUnitDirective = (unit, baseEnum) =>
   }
 
 const decimalPrefixes = {
-  "deca": `da`,
-  "hecto": `h`,
-  "kilo": `k`,
-  "mega": `M`,
-  "giga": `G`,
-  "tera": `T`,
-  "peta": `P`,
-  "exa": `E`,
-  "zetta": `Z`,
-  "yotta": `Y`,
+  deca: `da`,
+  hecto: `h`,
+  kilo: `k`,
+  mega: `M`,
+  giga: `G`,
+  tera: `T`,
+  peta: `P`,
+  exa: `E`,
+  zetta: `Z`,
+  yotta: `Y`,
   "": ``,
-  "deci": `d`,
-  "centi": `c`,
-  "milli": `m`,
-  "miro": `u`,
-  "nano": `n`,
-  "pico": `p`,
-  "femto": `f`,
-  "atto": `a`,
-  "zpeto": `z`,
-  "yocto": `y`
+  deci: `d`,
+  centi: `c`,
+  milli: `m`,
+  miro: `u`,
+  nano: `n`,
+  pico: `p`,
+  femto: `f`,
+  atto: `a`,
+  zpeto: `z`,
+  yocto: `y`
 }
 
 const binaryPrefixes = {
-  "kibi": `Ki`,
-  "mebi": `Mi`,
-  "gibi": `Gi`,
-  "tebi": `Ti`,
-  "pebi": `Pi`,
-  "exi": `Ei`,
-  "zebi": `Zi`,
-  "yobi": `Yi`,
+  kibi: `Ki`,
+  mebi: `Mi`,
+  gibi: `Gi`,
+  tebi: `Ti`,
+  pebi: `Pi`,
+  exi: `Ei`,
+  zebi: `Zi`,
+  yobi: `Yi`,
   "": ``,
-  "kilo": `k`,
-  "mega": `M`,
-  "giga": `G`,
-  "tera": `T`,
-  "peta": `P`,
-  "exa": `E`,
-  "zetta": `Z`,
-  "yotta": `Y`
+  kilo: `k`,
+  mega: `M`,
+  giga: `G`,
+  tera: `T`,
+  peta: `P`,
+  exa: `E`,
+  zetta: `Z`,
+  yotta: `Y`
 }
 
 const applyPrefixes = (arr, unit) => arr.map(prefix => `${prefix}${unit}`)
 
-const generatePrefixes = (normalPrefixes, abbreviationPrefixes) => (singular, plural, abbreviation) => [
-  ...applyPrefixes(normalPrefixes, singular),
-  ...applyPrefixes(normalPrefixes, plural),
-  ...applyPrefixes(abbreviationPrefixes, abbreviation)
-].join(`\n`)
+const generatePrefixes = (normalPrefixes, abbreviationPrefixes) => (
+  singular,
+  plural,
+  abbreviation
+) =>
+  [
+    ...applyPrefixes(normalPrefixes, singular),
+    ...applyPrefixes(normalPrefixes, plural),
+    ...applyPrefixes(abbreviationPrefixes, abbreviation)
+  ].join(`\n`)
 
-const generateDecimalPrefixes = generatePrefixes(Object.keys(decimalPrefixes), Object.values(decimalPrefixes))
+const generateDecimalPrefixes = generatePrefixes(
+  Object.keys(decimalPrefixes),
+  Object.values(decimalPrefixes)
+)
 
-const generateBinaryPrefixes = generatePrefixes(Object.keys(binaryPrefixes), Object.values(binaryPrefixes))
+const generateBinaryPrefixes = generatePrefixes(
+  Object.keys(binaryPrefixes),
+  Object.values(binaryPrefixes)
+)
 
-export const convertLength = createUnitDirective(`Length`, `
+export const convertLength = createUnitDirective(
+  `Length`,
+  `
   enum LengthTypesEnum {
     ${generateDecimalPrefixes(`meter`, `meters`, `m`)}
     inch
@@ -122,9 +147,12 @@ export const convertLength = createUnitDirective(`Length`, `
     mil
     mils
   }
-`)
+`
+)
 
-export const convertSurfaceArea = createUnitDirective(`SurfaceArea`, `
+export const convertSurfaceArea = createUnitDirective(
+  `SurfaceArea`,
+  `
   enum SurfaceAreaTypesEnum {
     m2
     sqin
@@ -139,9 +167,12 @@ export const convertSurfaceArea = createUnitDirective(`SurfaceArea`, `
     hectare
     hectares
   }
-`)
+`
+)
 
-export const convertVolume = createUnitDirective(`Volume`, `
+export const convertVolume = createUnitDirective(
+  `Volume`,
+  `
   enum VolumeTypesEnum {
     m3
     ${generateDecimalPrefixes(`litre`, `litres`, `L`)}
@@ -154,9 +185,12 @@ export const convertVolume = createUnitDirective(`Volume`, `
     tablespoon
     tablespoons
   }
-`)
+`
+)
 
-export const convertLiquidVolume = createUnitDirective(`LiquidVolume`, `
+export const convertLiquidVolume = createUnitDirective(
+  `LiquidVolume`,
+  `
   enum LiquidVolumeTypesEnum {
     minim
     min
@@ -188,9 +222,12 @@ export const convertLiquidVolume = createUnitDirective(`LiquidVolume`, `
     drop
     gtt
   }
-`)
+`
+)
 
-export const convertAngle = createUnitDirective(`Angle`, `
+export const convertAngle = createUnitDirective(
+  `Angle`,
+  `
   enum AngleTypesEnum {
     ${generateDecimalPrefixes(`radian`, `radians`, `rad`)}
     ${generateDecimalPrefixes(`degree`, `degrees`, `deg`)}
@@ -203,9 +240,12 @@ export const convertAngle = createUnitDirective(`Angle`, `
     arcminute
     arcminutes
   }
-`)
+`
+)
 
-export const convertTime = createUnitDirective(`Time`, `
+export const convertTime = createUnitDirective(
+  `Time`,
+  `
   enum TimeTypesEnum {
     s
     sec
@@ -235,9 +275,12 @@ export const convertTime = createUnitDirective(`Time`, `
     millennium
     millennia
   }
-`)
+`
+)
 
-export const convertMass = createUnitDirective(`Mass`, `
+export const convertMass = createUnitDirective(
+  `Mass`,
+  `
   enum MassTypesEnum {
     ${generateDecimalPrefixes(`gram`, `grams`, `g`)}
     ${generateDecimalPrefixes(`tonne`, `tonnes`, `t`)}
@@ -257,9 +300,12 @@ export const convertMass = createUnitDirective(`Mass`, `
     stick
     stone
   }
-`)
+`
+)
 
-export const convertTemperature = createUnitDirective(`Temperature`, `
+export const convertTemperature = createUnitDirective(
+  `Temperature`,
+  `
   enum TemperatureTypesEnum {
     kelvin
     K
@@ -270,9 +316,12 @@ export const convertTemperature = createUnitDirective(`Temperature`, `
     rankine
     degR
   }
-`)
+`
+)
 
-export const convertForce = createUnitDirective(`Force`, `
+export const convertForce = createUnitDirective(
+  `Force`,
+  `
   enum ForceTypesEnum {
     ${generateDecimalPrefixes(`newton`, `newtons`, `N`)}
     ${generateDecimalPrefixes(`dyne`, `dynes`, `dyn`)}
@@ -280,9 +329,12 @@ export const convertForce = createUnitDirective(`Force`, `
     lbf
     kip
   }
-`)
+`
+)
 
-export const convertEnergy = createUnitDirective(`Energy`, `
+export const convertEnergy = createUnitDirective(
+  `Energy`,
+  `
   enum EnergyTypesEnum {
     joule
     J
@@ -291,16 +343,22 @@ export const convertEnergy = createUnitDirective(`Energy`, `
     BTU
     ${generateDecimalPrefixes(`electronvolt`, `electronvolts`, `eV`)}
   }
-`)
+`
+)
 
-export const convertPower = createUnitDirective(`Power`, `
+export const convertPower = createUnitDirective(
+  `Power`,
+  `
   enum PowerTypesEnum {
     ${generateDecimalPrefixes(`watt`, `watts`, `W`)}
     hp
   }
-`)
+`
+)
 
-export const convertPressure = createUnitDirective(`Pressure`, `
+export const convertPressure = createUnitDirective(
+  `Pressure`,
+  `
   enum PressureTypesEnum {
     Pa
     psi
@@ -311,9 +369,12 @@ export const convertPressure = createUnitDirective(`Pressure`, `
     mmH2O
     cmH2O
   }
-`)
+`
+)
 
-export const convertElectroMagneticForce = createUnitDirective(`ElectroMagneticForce`, `
+export const convertElectroMagneticForce = createUnitDirective(
+  `ElectroMagneticForce`,
+  `
   enum ElectroMagneticForceTypesEnum {
     ${generateDecimalPrefixes(`coulomb`, `coulombs`, `C`)}
     ${generateDecimalPrefixes(`watt`, `watts`, `W`)}
@@ -327,11 +388,15 @@ export const convertElectroMagneticForce = createUnitDirective(`ElectroMagneticF
     ohm
     siemens
   }
-`)
+`
+)
 
-export const convertBinary = createUnitDirective(`Binary`, `
+export const convertBinary = createUnitDirective(
+  `Binary`,
+  `
   enum BinaryTypesEnum {
     ${generateBinaryPrefixes(`bit`, `bits`, `b`)}
     ${generateBinaryPrefixes(`byte`, `bytes`, `B`)}
   }
-`)
+`
+)

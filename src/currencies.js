@@ -1,4 +1,4 @@
-import { gql } from "apollo-server"
+import gql from "graphql-tag"
 import { SchemaDirectiveVisitor } from "graphql-tools"
 import { defaultFieldResolver, GraphQLString } from "graphql"
 import dinero from "dinero.js"
@@ -33,14 +33,25 @@ export class formatCurrency extends SchemaDirectiveVisitor {
 
     field.args.push({ name: `format`, type: GraphQLString })
     field.args.push({ name: `currency`, type: GraphQLString })
-    field.args.push({ name: `roundingMode`, type: getTypeMap(roundingModeEnum).RoundingMode })
+    field.args.push({
+      name: `roundingMode`,
+      type: getTypeMap(roundingModeEnum).RoundingMode
+    })
 
-    field.resolve = async function(source, { format, currency, roundingMode, ...args }, context, info) {
+    field.resolve = async function(
+      source,
+      { format, currency, roundingMode, ...args },
+      context,
+      info
+    ) {
       const result = await resolve.call(this, source, args, context, info)
       const transform = input => {
         const config = { amount: result }
         if (currency) config.currency = currency
-        return dinero(config).toFormat(format || defaultFormat, roundingMode || defaultRoundingMode)
+        return dinero(config).toFormat(
+          format || defaultFormat,
+          roundingMode || defaultRoundingMode
+        )
       }
       return Array.isArray(result) ? result.map(transform) : transform(result)
     }

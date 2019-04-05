@@ -1,4 +1,4 @@
-import { gql } from "apollo-server"
+import gql from "graphql-tag"
 import { SchemaDirectiveVisitor } from "graphql-tools"
 import { defaultFieldResolver, GraphQLString } from "graphql"
 import { format as formatter } from "date-fns"
