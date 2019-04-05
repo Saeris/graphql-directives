@@ -16,12 +16,12 @@ export default {
 }
 
 // Export namespaced groups of directives
-export { currencies as Currencies }
-export { dates as Dates }
-export { numbers as Numbers }
-export { phone as Phone }
-export { strings as Strings }
-export { units as Units }
+export * as Currencies from "./currencies"
+export * as Dates from "./dates"
+export * as Numbers from "./numbers"
+export * as Phone from "./phone"
+export * as Strings from "./strings"
+export * as Units from "./units"
 
 // Export each directive individually
 export * from "./currencies"
