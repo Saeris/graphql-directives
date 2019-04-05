@@ -1,13 +1,5 @@
 module.exports = {
-  plugins: [
-    require(`@babel/plugin-proposal-export-namespace-from`)
-  ],
-  presets: [
-    [
-      require(`@babel/preset-env`),
-      { targets: { node: `8.10` }, useBuiltIns: `usage` }
-    ]
-  ],
+  plugins: [require(`@babel/plugin-proposal-export-namespace-from`)],
   env: {
     test: {
       sourceMaps: `inline`,

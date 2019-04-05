@@ -1,7 +1,7 @@
 import { gql } from "apollo-server"
 import { SchemaDirectiveVisitor } from "graphql-tools"
 import { defaultFieldResolver, GraphQLString } from "graphql"
-import formatter from "date-fns/format"
+import { format as formatter } from "date-fns"
 
 export class formatDate extends SchemaDirectiveVisitor {
   static declaration() {

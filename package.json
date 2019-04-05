@@ -1,22 +1,17 @@
 {
   "name": "@saeris/graphql-directives",
   "description": "A collection of custom GraphQL Schema Directives for use with Apollo Server.",
-  "keywords": [
-    "apollo",
-    "graphql",
-    "directives",
-    "schema directives"
-  ],
+  "keywords": ["apollo", "graphql", "directives", "schema directives"],
   "author": "Drake Costa <drake@saeris.io> (http://saeris.github.io/)",
   "repository": {
     "type": "git",
     "url": "https://github.com/saeris/graphql-directives.git"
   },
-  "version": "0.2.0",
+  "version": "0.0.1",
   "license": "MIT",
   "main": "src/index.js",
   "scripts": {
-    "start": "nodemon --exec babel-node example/index.js",
+    "start": "nodemon --exec babel-node --config-file ./example/.babelrc.js example/index.js",
     "build": "pack build",
     "lint": "eslint ./src",
     "test": "yarn lint && jest -c ./jest.config.js",
@@ -53,6 +48,7 @@
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-jest": "^22.4.1",
     "eslint-plugin-promise": "^4.1.1",
+    "esm": "3.2.22",
     "graphql": "14.2.1",
     "jest": "^24.7.1",
     "lint-staged": "^8.1.5",
@@ -68,15 +64,10 @@
       [
         "@pika/plugin-standard-pkg",
         {
-          "exclude": [
-            "__TEST__/*"
-          ]
+          "exclude": ["__TEST__/*"]
         }
       ],
-      [
-        "@pika/plugin-build-node",
-        {}
-      ]
+      ["@pika/plugin-build-node", {}]
     ]
   },
   "gitHooks": {
