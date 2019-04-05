@@ -1,13 +1,18 @@
 {
   "name": "@saeris/graphql-directives",
   "description": "A collection of custom GraphQL Schema Directives for use with Apollo Server.",
-  "keywords": ["apollo", "graphql", "directives", "schema directives"],
+  "keywords": [
+    "apollo",
+    "graphql",
+    "directives",
+    "schema directives"
+  ],
   "author": "Drake Costa <drake@saeris.io> (http://saeris.github.io/)",
   "repository": {
     "type": "git",
     "url": "https://github.com/saeris/graphql-directives.git"
   },
-  "version": "0.0.1",
+  "version": "0.2.1",
   "license": "MIT",
   "main": "src/index.js",
   "scripts": {
@@ -64,10 +69,15 @@
       [
         "@pika/plugin-standard-pkg",
         {
-          "exclude": ["__TEST__/*"]
+          "exclude": [
+            "__TEST__/*"
+          ]
         }
       ],
-      ["@pika/plugin-build-node", {}]
+      [
+        "@pika/plugin-build-node",
+        {}
+      ]
     ]
   },
   "gitHooks": {
