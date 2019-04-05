@@ -12,7 +12,7 @@
     "type": "git",
     "url": "https://github.com/saeris/graphql-directives.git"
   },
-  "version": "0.0.1",
+  "version": "0.1.0",
   "license": "MIT",
   "main": "src/index.js",
   "scripts": {
@@ -40,6 +40,7 @@
     "@babel/node": "^7.0.0",
     "@babel/plugin-proposal-export-namespace-from": "^7.2.0",
     "@babel/preset-env": "^7.4.3",
+    "@pika/pack": "^0.3.6",
     "@pika/plugin-build-node": "^0.3.14",
     "@pika/plugin-standard-pkg": "^0.3.14",
     "@types/graphql": "14.2.0",
