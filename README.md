@@ -22,7 +22,7 @@
 
 ## 🚧 Under Construction
 
-> Warning: This library is still under construction! This message will be removed once it's published and available for use!
+> Warning: This library is still under construction! A pre-release version is available, but it is recommended not to use this in production! Use at your own risk!
 
 ## Table of Contents
 
