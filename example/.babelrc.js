@@ -6,7 +6,8 @@ module.exports = {
       {
         targets: { node: `8.10` },
         modules: `commonjs`,
-        useBuiltIns: `usage`
+        useBuiltIns: `usage`,
+        corejs: 3,
       }
     ]
   ],
@@ -19,7 +20,8 @@ module.exports = {
           {
             targets: { node: `8.10` },
             modules: `commonjs`,
-            useBuiltIns: `usage`
+            useBuiltIns: `usage`,
+            corejs: 3,
           }
         ]
       ]

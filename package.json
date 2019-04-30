@@ -1,18 +1,24 @@
 {
   "name": "@saeris/graphql-directives",
   "description": "A collection of custom GraphQL Schema Directives for use with Apollo Server.",
-  "keywords": ["apollo", "graphql", "directives", "schema directives"],
+  "keywords": [
+    "apollo",
+    "graphql",
+    "directives",
+    "schema directives"
+  ],
   "author": "Drake Costa <drake@saeris.io> (http://saeris.github.io/)",
   "repository": {
     "type": "git",
     "url": "https://github.com/saeris/graphql-directives.git"
   },
-  "version": "0.0.1",
+  "version": "0.2.3",
   "license": "MIT",
   "main": "src/index.js",
   "scripts": {
-    "start": "nodemon --exec babel-node --config-file ./example/.babelrc.js example/index.js",
+    "start": "nodemon --watch src --watch example --exec run-s build serve",
     "build": "pack build",
+    "serve": "babel-node --config-file ./example/.babelrc.js example/index.js",
     "lint": "eslint ./src",
     "test": "yarn lint && jest -c ./jest.config.js",
     "test:watch": "jest -c ./jest.config.js --watch",
@@ -27,35 +33,37 @@
     "joi": "14.3.1",
     "libphonenumber-js": "^1.7.15",
     "lodash": "^4.17.11",
-    "mathjs": "^5.8.0",
+    "mathjs": "^5.9.0",
     "numeral": "2.0.6"
   },
   "devDependencies": {
-    "@babel/core": "^7.4.3",
+    "@babel/core": "^7.4.4",
     "@babel/node": "^7.0.0",
     "@babel/plugin-proposal-export-namespace-from": "^7.2.0",
-    "@babel/preset-env": "^7.4.3",
-    "@pika/pack": "^0.3.6",
-    "@pika/plugin-build-node": "^0.3.14",
-    "@pika/plugin-standard-pkg": "^0.3.14",
+    "@babel/preset-env": "^7.4.4",
+    "@pika/pack": "^0.3.7",
+    "@pika/plugin-build-node": "^0.3.16",
+    "@pika/plugin-standard-pkg": "^0.3.16",
     "@types/graphql": "14.2.0",
     "apollo-server": "^2.4.8",
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^24.7.1",
     "codecov": "^3.3.0",
+    "core-js": "3",
     "eslint": "^5.16.0",
-    "eslint-plugin-import": "^2.7.0",
-    "eslint-plugin-jest": "^22.4.1",
+    "eslint-plugin-import": "^2.17.2",
+    "eslint-plugin-jest": "^22.5.1",
     "eslint-plugin-promise": "^4.1.1",
     "esm": "3.2.22",
     "graphql": "14.2.1",
     "graphql-tag": "^2.10.1",
     "jest": "^24.7.1",
     "lint-staged": "^8.1.5",
-    "nodemon": "1.18.10",
-    "prettier": "^1.7.0",
-    "snyk": "^1.147.3"
+    "nodemon": "1.18.11",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^1.17.0",
+    "snyk": "^1.154.0"
   },
   "peerDependencies": {
     "graphql": "^14.0.0",
@@ -66,10 +74,15 @@
       [
         "@pika/plugin-standard-pkg",
         {
-          "exclude": ["__TEST__/*"]
+          "exclude": [
+            "__TEST__/*"
+          ]
         }
       ],
-      ["@pika/plugin-build-node", {}]
+      [
+        "@pika/plugin-build-node",
+        {}
+      ]
     ]
   },
   "gitHooks": {
