@@ -4,10 +4,11 @@ import { resolvers } from "./resolvers"
 import { defaultQuery } from "./defaultQuery"
 import schemaDirectives from "../pkg"
 
-const endpoint = {
-  host: `localhost`,
-  port: 4000
-}
+const host = process.env.HOSTNAME
+
+const endpoint = host
+  ? `https://${host.replace(`sse-sandbox-`, ``)}.sse.codesandbox.io`
+  : `localhost:9000`
 
 const directives = Object.values(schemaDirectives).map(directive =>
   directive.declaration()
@@ -20,7 +21,7 @@ const server = new ApolloServer({
   playground: {
     tabs: [
       {
-        endpoint: `${endpoint.host}:${endpoint.port}`,
+        endpoint,
         query: defaultQuery
       }
     ]
@@ -28,6 +29,6 @@ const server = new ApolloServer({
 })
 
 /* eslint-disable */
-server.listen(endpoint).then(({ url }) => {
+server.listen({ host: `localhost`, port: 9000 }).then(({ url }) => {
   console.log(`🚀 Server ready at ${url}`)
 })

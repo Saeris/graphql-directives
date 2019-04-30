@@ -45,10 +45,6 @@ export const defaultQuery = `
       defaultPhoneNumer: phoneNumber
       formattedPhoneNumber: phoneNumber(format: National)
 
-      # powerSupply: Int @convertElectroMagneticForce
-      defaultPowerSupply: powerSupply
-      formattedPowerSupply: powerSupply(convertTo: volts)
-
       # diskSpace: Int @converBinary
       defaultDiskSpace: diskSpace
       formattedDiskSpace: diskSpace(convertTo: bits)
