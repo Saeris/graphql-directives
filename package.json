@@ -50,7 +50,7 @@
     "eslint-plugin-import": "^2.17.2",
     "eslint-plugin-jest": "^22.5.1",
     "eslint-plugin-promise": "^4.1.1",
-    "esm": "3.2.22",
+    "esm": "3.2.23",
     "graphql": "14.2.1",
     "graphql-tag": "^2.10.1",
     "jest": "^24.7.1",
