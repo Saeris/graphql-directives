@@ -2,7 +2,7 @@
   "name": "@saeris/graphql-directives",
   "description": "A collection of custom GraphQL Schema Directives for use with Apollo Server.",
   "keywords": ["apollo", "graphql", "directives", "schema directives"],
-  "author": "Drake Costa <drake@saeris.io> (http://saeris.github.io/)",
+  "author": "Drake Costa <drake@saeris.io> (https://github.com/Saeris/",
   "repository": {
     "type": "git",
     "url": "https://github.com/saeris/graphql-directives.git"
