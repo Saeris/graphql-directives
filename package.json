@@ -38,7 +38,7 @@
     "@babel/preset-env": "^7.4.4",
     "@pika/pack": "^0.3.7",
     "@pika/plugin-build-node": "^0.3.16",
-    "@pika/plugin-standard-pkg": "^0.3.16",
+    "@pika/plugin-standard-pkg": "^0.4.0",
     "@types/graphql": "14.2.0",
     "apollo-server": "^2.4.8",
     "babel-core": "^7.0.0-bridge.0",
