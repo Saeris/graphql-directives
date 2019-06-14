@@ -36,7 +36,7 @@
     "@babel/node": "^7.0.0",
     "@babel/plugin-proposal-export-namespace-from": "^7.2.0",
     "@babel/preset-env": "^7.4.4",
-    "@pika/pack": "^0.3.7",
+    "@pika/pack": "^0.4.0",
     "@pika/plugin-build-node": "^0.3.16",
     "@pika/plugin-standard-pkg": "^0.3.16",
     "@types/graphql": "14.2.0",
