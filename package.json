@@ -39,7 +39,7 @@
     "@pika/pack": "^0.3.7",
     "@pika/plugin-build-node": "^0.3.16",
     "@pika/plugin-standard-pkg": "^0.3.16",
-    "@types/graphql": "14.2.0",
+    "@types/graphql": "14.2.2",
     "apollo-server": "^2.4.8",
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
