@@ -9,12 +9,6 @@
   <a href="https://codecov.io/gh/Saeris/graphql-directives">
     <img src="https://codecov.io/gh/Saeris/graphql-directives/branch/master/graph/badge.svg" alt="codecov"/>
   </a>
-  <a href="https://snyk.io/test/github/Saeris/graphql-directives?targetFile=package.json">
-    <img src="https://snyk.io/test/github/Saeris/graphql-directives/badge.svg?targetFile=package.json" alt="Known Vulnerabilities">
-  </a>
-  <a href="https://greenkeeper.io/">
-    <img src="https://badges.greenkeeper.io/Saeris/graphql-directives.svg" alt="Known Vulnerabilities" alt="greenkeeper">
-  </a>
 </p>
 <p align="center">A library of custom <a href="https://graphql.org/learn/queries/#directives">GraphQL directives</a> to give your schema super powers!</p>
 

@@ -1,17 +1,22 @@
 import { SchemaDirectiveVisitor } from "graphql-tools"
-import { GraphQLNonNull, GraphQLScalarType } from "graphql"
+import {
+  GraphQLNonNull,
+  GraphQLScalarType,
+  GraphQLInputField,
+  GraphQLField
+} from "graphql"
 import { MaxLength, MinLength, GreaterThan, LessThan } from "./scalars"
 
 export class maxLength extends SchemaDirectiveVisitor {
-  visitInputFieldDefinition(field) {
+  visitInputFieldDefinition(field: GraphQLInputField) {
     this.wrapType(field)
   }
 
-  visitFieldDefinition(field) {
+  visitFieldDefinition(field: GraphQLField<any, any, any>) {
     this.wrapType(field)
   }
 
-  wrapType(field) {
+  wrapType(field: GraphQLField<any, any, any> | GraphQLInputField) {
     if (
       field.type instanceof GraphQLNonNull &&
       field.type.ofType instanceof GraphQLScalarType
@@ -28,15 +33,15 @@ export class maxLength extends SchemaDirectiveVisitor {
 }
 
 export class minLength extends SchemaDirectiveVisitor {
-  visitInputFieldDefinition(field) {
+  visitInputFieldDefinition(field: GraphQLInputField) {
     this.wrapType(field)
   }
 
-  visitFieldDefinition(field) {
+  visitFieldDefinition(field: GraphQLField<any, any, any>) {
     this.wrapType(field)
   }
 
-  wrapType(field) {
+  wrapType(field: GraphQLField<any, any, any> | GraphQLInputField) {
     if (
       field.type instanceof GraphQLNonNull &&
       field.type.ofType instanceof GraphQLScalarType
@@ -53,15 +58,15 @@ export class minLength extends SchemaDirectiveVisitor {
 }
 
 export class greaterThan extends SchemaDirectiveVisitor {
-  visitInputFieldDefinition(field) {
+  visitInputFieldDefinition(field: GraphQLInputField) {
     this.wrapType(field)
   }
 
-  visitFieldDefinition(field) {
+  visitFieldDefinition(field: GraphQLField<any, any, any>) {
     this.wrapType(field)
   }
 
-  wrapType(field) {
+  wrapType(field: GraphQLField<any, any, any> | GraphQLInputField) {
     if (
       field.type instanceof GraphQLNonNull &&
       field.type.ofType instanceof GraphQLScalarType
@@ -78,15 +83,15 @@ export class greaterThan extends SchemaDirectiveVisitor {
 }
 
 export class lessThan extends SchemaDirectiveVisitor {
-  visitInputFieldDefinition(field) {
+  visitInputFieldDefinition(field: GraphQLInputField) {
     this.wrapType(field)
   }
 
-  visitFieldDefinition(field) {
+  visitFieldDefinition(field: GraphQLField<any, any, any>) {
     this.wrapType(field)
   }
 
-  wrapType(field) {
+  wrapType(field: GraphQLField<any, any, any> | GraphQLInputField) {
     if (
       field.type instanceof GraphQLNonNull &&
       field.type.ofType instanceof GraphQLScalarType

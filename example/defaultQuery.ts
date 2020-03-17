@@ -3,7 +3,7 @@ export const defaultQuery = `
     getPerson {
       # birthDate: String @formatDate
       defaultBirthDate: birthDate
-      formattedBirthDate:birthDate(format: "H:mm:ssa - MMMM D, YYYY")
+      formattedBirthDate:birthDate(format: "H:mm:ssa - mmmm d, yyyy")
 
       # age: Int @convertTime(originalUnit: years)
       defaultAge: age
@@ -29,11 +29,11 @@ export const defaultQuery = `
       defaultRoomDimensions: roomDimensions
       convertedRoomDimensions: roomDimensions(convertTo: m2)
 
-      # bagSize: Float @convertSurfaceArea(originalUnit: cuin)
+      # bagSize: Float @convertVolume(originalUnit: cuin)
       defaultBagSize: bagSize
       convertedBagSize: bagSize(convertTo: litre)
 
-      # coffeeConsumed: Float @convertSurfaceArea(originalUnit: fluidounce)
+      # coffeeConsumed: Float @convertLiquidVolume(originalUnit: fluidounce)
       defaultCoffeeConsumed: coffeeConsumed
       convertedCoffeeConsumed: coffeeConsumed(convertTo: cup)
 

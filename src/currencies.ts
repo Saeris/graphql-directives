@@ -1,6 +1,11 @@
 import gql from "graphql-tag"
 import { SchemaDirectiveVisitor } from "graphql-tools"
-import { defaultFieldResolver, GraphQLString } from "graphql"
+import {
+  defaultFieldResolver,
+  GraphQLString,
+  GraphQLField,
+  GraphQLArgument
+} from "graphql"
 import dinero from "dinero.js"
 import { getTypeMap } from "./utils"
 
@@ -27,16 +32,19 @@ export class formatCurrency extends SchemaDirectiveVisitor {
     `
   }
 
-  visitFieldDefinition(field) {
+  visitFieldDefinition(field: GraphQLField<any, any, any>) {
     const { resolve = defaultFieldResolver } = field
     const { defaultFormat, defaultRoundingMode } = this.args
 
-    field.args.push({ name: `format`, type: GraphQLString })
-    field.args.push({ name: `currency`, type: GraphQLString })
+    field.args.push({ name: `format`, type: GraphQLString } as GraphQLArgument)
+    field.args.push({
+      name: `currency`,
+      type: GraphQLString
+    } as GraphQLArgument)
     field.args.push({
       name: `roundingMode`,
       type: getTypeMap(roundingModeEnum).RoundingMode
-    })
+    } as GraphQLArgument)
 
     field.resolve = async function(
       source,
@@ -45,8 +53,8 @@ export class formatCurrency extends SchemaDirectiveVisitor {
       info
     ) {
       const result = await resolve.call(this, source, args, context, info)
-      const transform = input => {
-        const config = { amount: result }
+      const transform = (input: number) => {
+        const config: dinero.Options = { amount: input }
         if (currency) config.currency = currency
         return dinero(config).toFormat(
           format || defaultFormat,

@@ -1,8 +1,11 @@
-import { GraphQLScalarType } from "graphql"
-import Joi from "joi"
+import { GraphQLScalarType, GraphQLScalarTypeConfig } from "graphql"
+import Joi from "@hapi/joi"
 
 export class MaxLength extends GraphQLScalarType {
-  constructor(type, limit) {
+  constructor(
+    type: Readonly<GraphQLScalarTypeConfig<any, any>>,
+    limit: number
+  ) {
     super({
       name: `MaxLength${limit}`,
 
@@ -17,18 +20,21 @@ export class MaxLength extends GraphQLScalarType {
       },
 
       parseValue(value) {
-        return type.parseValue(value)
+        return type.parseValue?.(value)
       },
 
       parseLiteral(ast) {
-        return type.parseLiteral(ast)
+        return type.parseLiteral?.(ast, {})
       }
     })
   }
 }
 
 export class MinLength extends GraphQLScalarType {
-  constructor(type, limit) {
+  constructor(
+    type: Readonly<GraphQLScalarTypeConfig<any, any>>,
+    limit: number
+  ) {
     super({
       name: `MinLength${limit}`,
 
@@ -43,18 +49,21 @@ export class MinLength extends GraphQLScalarType {
       },
 
       parseValue(value) {
-        return type.parseValue(value)
+        return type.parseValue?.(value)
       },
 
       parseLiteral(ast) {
-        return type.parseLiteral(ast)
+        return type.parseLiteral?.(ast, {})
       }
     })
   }
 }
 
 export class GreaterThan extends GraphQLScalarType {
-  constructor(type, limit) {
+  constructor(
+    type: Readonly<GraphQLScalarTypeConfig<any, any>>,
+    limit: number
+  ) {
     super({
       name: `GreaterThan${limit}`,
 
@@ -69,18 +78,21 @@ export class GreaterThan extends GraphQLScalarType {
       },
 
       parseValue(value) {
-        return type.parseValue(value)
+        return type.parseValue?.(value)
       },
 
       parseLiteral(ast) {
-        return type.parseLiteral(ast)
+        return type.parseLiteral?.(ast, {})
       }
     })
   }
 }
 
 export class LessThan extends GraphQLScalarType {
-  constructor(type, limit) {
+  constructor(
+    type: Readonly<GraphQLScalarTypeConfig<any, any>>,
+    limit: number
+  ) {
     super({
       name: `LessThan${limit}`,
 
@@ -95,11 +107,11 @@ export class LessThan extends GraphQLScalarType {
       },
 
       parseValue(value) {
-        return type.parseValue(value)
+        return type.parseValue?.(value)
       },
 
       parseLiteral(ast) {
-        return type.parseLiteral(ast)
+        return type.parseLiteral?.(ast, {})
       }
     })
   }

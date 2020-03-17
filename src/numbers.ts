@@ -1,6 +1,11 @@
 import gql from "graphql-tag"
 import { SchemaDirectiveVisitor } from "graphql-tools"
-import { defaultFieldResolver, GraphQLString } from "graphql"
+import {
+  defaultFieldResolver,
+  GraphQLString,
+  GraphQLField,
+  GraphQLArgument
+} from "graphql"
 import numeral from "numeral"
 
 export class formatNumber extends SchemaDirectiveVisitor {
@@ -12,15 +17,16 @@ export class formatNumber extends SchemaDirectiveVisitor {
     `
   }
 
-  visitFieldDefinition(field) {
+  visitFieldDefinition(field: GraphQLField<any, any, any>) {
     const { resolve = defaultFieldResolver } = field
     const { defaultFormat } = this.args
 
-    field.args.push({ name: `format`, type: GraphQLString })
+    field.args.push({ name: `format`, type: GraphQLString } as GraphQLArgument)
 
     field.resolve = async function(source, { format, ...args }, context, info) {
       const result = await resolve.call(this, source, args, context, info)
-      const transform = input => numeral(input).format(format || defaultFormat)
+      const transform = (input: any) =>
+        numeral(input).format(format || defaultFormat)
       return Array.isArray(result) ? result.map(transform) : transform(result)
     }
 

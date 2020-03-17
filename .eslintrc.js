@@ -4,7 +4,7 @@ const srcDir = join(__dirname, `src`)
 
 module.exports = {
   root: true,
-  parser: `babel-eslint`,
+  parser: "@typescript-eslint/parser",
   env: {
     es6: true,
     node: true,
@@ -12,6 +12,7 @@ module.exports = {
     "jest/globals": true
   },
   plugins: [
+    "@typescript-eslint", // https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/eslint-plugin
     `jest`, // https://github.com/jest-community/eslint-plugin-jest
     `import`, // https://github.com/benmosher/eslint-plugin-import
     `promise` // https://github.com/xjamundx/eslint-plugin-promise
@@ -20,26 +21,8 @@ module.exports = {
     polyfills: [`fetch`, `Promise`]
   },
   parserOptions: {
-    ecmaVersion: 2017,
-    sourceType: `module`,
-    ecmaFeatures: {
-      arrowFunctions: true,
-      blockBindings: true,
-      classes: true,
-      defaultParams: true,
-      destructuring: true,
-      forOf: true,
-      generators: false,
-      modules: true,
-      objectLiteralComputedProperties: true,
-      objectLiteralDuplicateProperties: false,
-      objectLiteralShorthandMethods: true,
-      objectLiteralShorthandProperties: true,
-      spread: true,
-      superInFunctions: true,
-      templateStrings: true,
-      jsx: true
-    }
+    ecmaVersion: 2020,
+    sourceType: `module`
   },
   rules: {
     // Possible Errors
@@ -59,7 +42,7 @@ module.exports = {
     "no-ex-assign": 2,
     "no-extra-boolean-cast": 2,
     "no-extra-parens": [2, `functions`],
-    "no-extra-semi": 2,
+    "no-extra-semi": 0,
     "no-func-assign": 2,
     "no-inner-declarations": 2,
     "no-invalid-regexp": 2,
@@ -172,10 +155,6 @@ module.exports = {
     "no-undef": 2,
     "no-undef-init": 2,
     "no-undefined": 2,
-    "no-unused-vars": [
-      2,
-      { vars: `local`, args: `none`, argsIgnorePattern: `^_` }
-    ],
     "no-use-before-define": [2, { functions: true, classes: true }],
 
     // Node.js and CommonJS
@@ -209,22 +188,18 @@ module.exports = {
     "func-name-matching": 0,
     "func-names": 0,
     "func-style": [2, `declaration`, { allowArrowFunctions: true }],
-    "function-paren-newline": [2, `consistent`],
+    "function-paren-newline": [0, `consistent`],
     "id-blacklist": 0,
     "id-length": 0,
     "id-match": 0,
-    indent: [2, 2, { SwitchCase: 1 }],
+    indent: 0, // Incompatible with Prettier
     "jsx-quotes": [2, `prefer-double`],
     "key-spacing": 0,
     "keyword-spacing": [2, { before: true, after: true }],
     "line-comment-position": 0,
     "linebreak-style": 0,
     "lines-around-comment": 0,
-    "lines-between-class-members": [
-      2,
-      `always`,
-      { exceptAfterSingleLine: true }
-    ],
+    "lines-between-class-members": [2, `always`, { exceptAfterSingleLine: true }],
     "max-depth": 0,
     "max-len": 0,
     "max-lines": 0,
@@ -270,38 +245,27 @@ module.exports = {
     "one-var": [2, `never`],
     "one-var-declaration-per-line": [2, `always`],
     "operator-assignment": [2, `always`],
-    "operator-linebreak": [
-      2,
-      `before`,
-      { overrides: { "&&": `ignore`, "=": `ignore` } }
-    ],
+    "operator-linebreak": 0,
     "padded-blocks": [2, `never`],
     "padding-line-between-statements": 0,
-    "quote-props": [2, "consistent-as-needed", { keywords: true }],
-    quotes: [2, `backtick`, `avoid-escape`],
+    "quote-props": [2, "as-needed"],
+    quotes: 0, // Conflicts with TypeScript, use TypeScript Plugin Rule Instead
     "require-jsdoc": 0,
-    semi: [2, `never`],
+    semi: [0, `never`],
     "semi-spacing": [2, { before: false, after: true }],
     "semi-style": [2, `last`],
     "sprt-keys": 0,
     "sort-vars": 0,
     "space-before-blocks": 2,
-    "space-before-function-paren": [
-      2,
-      { anonymous: `never`, named: `never`, asyncArrow: `always` }
-    ],
+    "space-before-function-paren": [2, { anonymous: `never`, named: `never`, asyncArrow: `always` }],
     "space-in-parens": [2, `never`],
     "space-infix-ops": 2,
     "space-unary-ops": [2, { words: true, nonwords: false }],
-    "spaced-comment": [
-      0,
-      `always`,
-      { plugins: [`react`], exceptions: [`*`], markers: [`*`] }
-    ],
+    "spaced-comment": [0, `always`, { plugins: [`react`], exceptions: [`*`], markers: [`*`] }],
     "switch-colon-spacing": [2, { before: false, after: true }],
     "template-tag-spacing": [2, `never`],
     "unicode-bom": 0,
-    "wrap-regex": 2,
+    "wrap-regex": 0,
 
     // ECMAScript 6
     "arrow-body-style": [2, `as-needed`],
@@ -310,7 +274,7 @@ module.exports = {
     "constructor-super": 0,
     "generator-star-spacing": [2, { before: true, after: false }],
     "no-class-assign": 2,
-    "no-confusing-arrow": [2, { allowParens: true }],
+    "no-confusing-arrow": 0,
     "no-const-assign": 2,
     "no-dupe-class-members": 2,
     "no-duplicate-imports": 2,
@@ -337,29 +301,41 @@ module.exports = {
     "yield-star-spacing": [2, { before: false, after: true }],
 
     /*--- Plugin Specific Rules ---*/
+    // typescript
+    "@typescript-eslint/prefer-interface": 0,
+    "@typescript-eslint/explicit-function-return-type": 0,
+    "@typescript-eslint/no-use-before-define": 0,
+    "@typescript-eslint/camelcase": 0,
+    "@typescript-eslint/no-var-requires": 0,
+    "@typescript-eslint/no-unused-vars": ["error", { vars: "local", args: "none", ignoreRestSiblings: true }],
+    "@typescript-eslint/quotes": ["error", "backtick", { avoidEscape: true }],
+
     // jest
-    "jest/consistent-test-it": 2,
-    "jest/lowercase-name": 0,
-    "jest/no-disabled-tests": 1,
-    "jest/no-focused-tests": 2,
-    "jest/no-hooks": 0,
-    "jest/no-identical-title": 2,
-    "jest/no-jest-import": 2,
-    "jest/no-large-snapshots": [1, { maxSize: 12 }],
-    "jest/no-test-prefixes": 2,
-    "jest/prefer-to-have-length": 1,
-    "jest/prefer-to-be-null": 1,
-    "jest/prefer-to-be-undefined": 1,
-    "jest/prefer-expect-assertions": 0,
-    "jest/valid-describe": 2,
-    "jest/valid-expect": 2,
-    "jest/valid-expect-in-promise": 2,
+    "jest/consistent-test-it"                   : 2,
+    "jest/lowercase-name"                       : 0,
+    "jest/no-disabled-tests"                    : 1,
+    "jest/no-focused-tests"                     : 2,
+    "jest/no-hooks"                             : 0,
+    "jest/no-identical-title"                   : 2,
+    "jest/no-jest-import"                       : 2,
+    "jest/no-large-snapshots"                   : [1, { "maxSize": 12 }],
+    "jest/no-test-prefixes"                     : 2,
+    "jest/prefer-to-have-length"                : 1,
+    "jest/prefer-to-be-null"                    : 1,
+    "jest/prefer-to-be-undefined"               : 1,
+    "jest/prefer-expect-assertions"             : 0,
+    "jest/valid-describe"                       : 2,
+    "jest/valid-expect"                         : 2,
+    "jest/valid-expect-in-promise"              : 2,
 
     // import
-    "import/no-unresolved": [2, { commonjs: true, amd: true }],
+    "import/no-extraneous-dependencies": 0,
+    "import/no-cycle": "warn",
+    "import/prefer-default-export": 0,
+    "import/no-named-default": 0,
+    "import/no-webpack-loader-syntax": 0,
     "import/named": 2,
     "import/default": 2,
-    "import/no-webpack-loader-syntax": 2,
     "import/export": 2,
     "import/no-deprecated": 2,
     "import/no-mutable-exports": 2,
@@ -370,21 +346,16 @@ module.exports = {
       2,
       {
         "newlines-between": `never`,
-        groups: [
-          `builtin`,
-          [`internal`, `external`],
-          [`parent`, `sibling`],
-          `index`
-        ]
+        groups: [`builtin`, [`internal`, `external`], [`parent`, `sibling`], `index`]
       }
     ],
 
     // promise
-    "promise/catch-or-return": [2, { terminationMethod: [`catch`, `finally`] }],
-    "promise/always-return": 2,
-    "promise/no-return-wrap": 2,
-    "promise/param-names": 2,
-    "promise/prefer-await-to-then": 2,
-    "promise/prefer-await-to-callbacks": 2
+    "promise/catch-or-return"                   : [2, { terminationMethod: [`catch`, `finally`] }],
+    "promise/always-return"                     : 2,
+    "promise/no-return-wrap"                    : 2,
+    "promise/param-names"                       : 2,
+    "promise/prefer-await-to-then"              : 2,
+    "promise/prefer-await-to-callbacks"         : 2,
   }
 }

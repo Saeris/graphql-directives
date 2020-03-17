@@ -1,7 +1,12 @@
 import gql from "graphql-tag"
 import { SchemaDirectiveVisitor } from "graphql-tools"
-import { defaultFieldResolver, GraphQLString } from "graphql"
-import { parsePhoneNumber } from "libphonenumber-js"
+import {
+  defaultFieldResolver,
+  GraphQLString,
+  GraphQLField,
+  GraphQLArgument
+} from "graphql"
+import { parsePhoneNumber, NumberFormat } from "libphonenumber-js"
 import { getTypeMap } from "./utils"
 
 const phoneFormats = `
@@ -24,20 +29,23 @@ export class formatPhoneNumber extends SchemaDirectiveVisitor {
     `
   }
 
-  visitFieldDefinition(field) {
+  visitFieldDefinition(field: GraphQLField<any, any, any>) {
     const { resolve = defaultFieldResolver } = field
     const { defaultFormat } = this.args
-    const getFormat = raw => (raw === `E164` ? `E.164` : raw.toUpperCase())
+    const getFormat = (raw: string) =>
+      raw === `E164` ? `E.164` : raw.toUpperCase()
 
     field.args.push({
       name: `format`,
       type: getTypeMap(phoneFormats).PhoneFormats
-    })
+    } as GraphQLArgument)
 
     field.resolve = async function(source, { format, ...args }, context, info) {
       const result = await resolve.call(this, source, args, context, info)
-      const transform = input =>
-        parsePhoneNumber(input).format(getFormat(format || defaultFormat))
+      const transform = (input: string) =>
+        parsePhoneNumber(input).format(
+          getFormat(format || defaultFormat) as NumberFormat
+        )
       return Array.isArray(result) ? result.map(transform) : transform(result)
     }
 

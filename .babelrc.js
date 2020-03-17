@@ -1,5 +1,15 @@
 module.exports = {
-  plugins: [require(`@babel/plugin-proposal-export-namespace-from`)],
+  plugins: [
+    require(`@babel/plugin-proposal-class-properties`),
+    require(`@babel/plugin-proposal-object-rest-spread`)
+  ],
+  presets: [
+    require(`@babel/preset-typescript`),
+    [
+      require(`@babel/preset-env`),
+      { targets: { node: true }, modules: false, useBuiltIns: `usage`, corejs: 3 }
+    ]
+  ],
   env: {
     test: {
       sourceMaps: `inline`,
@@ -7,10 +17,10 @@ module.exports = {
         [
           require(`@babel/preset-env`),
           {
-            targets: { node: `8.10` },
+            targets: { node: true },
             modules: `commonjs`,
             useBuiltIns: `usage`,
-            corejs: 3,
+            corejs: 3
           }
         ]
       ]
