@@ -1,6 +1,7 @@
 {
 	"noHeader": true,
+	"homepage:": "http://saeris.io",
 	"repo": "https://github.com/saeris/graphql-directives",
-	"dist": "dist",
-	"styles": "public/styles.css"
+	"favicon": "static/favicon.ico",
+	"styles": "styles/styles.css"
 }
