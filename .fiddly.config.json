@@ -1,5 +1,6 @@
 {
 	"noHeader": true,
-	"repo": "https://github.com/saeris/graphql-scalars",
-	"dist": "dist"
+	"repo": "https://github.com/saeris/graphql-directives",
+	"dist": "dist",
+	"styles": "public/styles.css"
 }
