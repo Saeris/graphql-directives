@@ -1,5 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Titillium+Web:wght@700&display=swap");
 
+body {
+  background: #fefefe;
+}
+
 h1,
 h2,
 h3,
