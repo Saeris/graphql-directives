@@ -25,6 +25,7 @@ h6 {
     minmax(20px, 1fr)
     [full-end];
   width: 100%;
+  max-width: initial;
   margin: 0;
 }
 
