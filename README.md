@@ -116,7 +116,7 @@ type Person {
 
 You can quickly take this library for a spin by running the example either locally under the `example` directory (just run `yarn && yarn dev` and open your browser to http://localhost:9000) or live inside of CodeSandbox [here](https://codesandbox.io/s/github/Saeris/graphql-directives/).
 
-## 🗺 Directives
+## 🧭 Directives
 
 Below is a list of each available directive and it's individual usage. GraphQL schema examples include all of the available arguments for the directive and their default values. Query examples include all of the arguments the directive adds to the field on which it was applied in the schema, along with any default values for those arguments. Many of the directives included in this library will change the return type of the field they are applied to, most commonly that will be a `String`. The return type for each directive is noted in it's description. Additionally, example inputs and outputs are provided for each.
 
