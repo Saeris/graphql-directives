@@ -10,5 +10,31 @@ h3,
 h4,
 h5,
 h6 {
+  grid-column: content;
   font-family: "Titillium Web", sans-serif;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: [full-start]1fr[content-start]minmax(0, 80ch) [content-end]1fr[full-end];
+  width: 100%;
+  margin: none;
+}
+
+p,
+ul,
+ol,
+pre,
+hr,
+table {
+  grid-column: content;
+}
+
+figure {
+  grid-column: full;
+}
+
+iframe {
+  grid-column: full;
+  height: 800px;
 }
