@@ -14,11 +14,18 @@ h6 {
   font-family: "Titillium Web", sans-serif;
 }
 
-.container {
+#fiddly .container {
   display: grid;
-  grid-template-columns: [full-start]1fr[content-start]minmax(0, 80ch) [content-end]1fr[full-end];
+  grid-template-columns:
+    [full-start]
+    minmax(20px, 1fr)
+    [content-start]
+    minmax(0, 80ch)
+    [content-end]
+    minmax(20px, 1fr)
+    [full-end];
   width: 100%;
-  margin: none;
+  margin: 0;
 }
 
 p,
@@ -26,7 +33,9 @@ ul,
 ol,
 pre,
 hr,
-table {
+table,
+blockquote,
+details {
   grid-column: content;
 }
 
@@ -36,5 +45,6 @@ figure {
 
 iframe {
   grid-column: full;
+  width: 100%;
   height: 800px;
 }
