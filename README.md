@@ -1,4 +1,4 @@
-<h1 align="center" style="display: block; text-align: center;">🗺️ GraphQL Directives</h1>
+<h1 align="center" style="display: block; text-align: center;">🧭 GraphQL Directives</h1>
 <p align="center"><a href="https://www.npmjs.org/package/@saeris/graphql-directives"><img src="https://img.shields.io/npm/v/@saeris/graphql-directives.svg?style=flat" alt="npm"></a><a href="https://travis-ci.org/Saeris/graphql-directives"><img src="https://travis-ci.org/Saeris/graphql-directives.svg?branch=master" alt="travis"></a><a href="https://codecov.io/gh/Saeris/graphql-directives"><img src="https://codecov.io/gh/Saeris/graphql-directives/branch/master/graph/badge.svg" alt="codecov"/></a></p>
 <p align="center">A library of custom <a href="https://graphql.org/learn/queries/#directives">GraphQL directives</a> to give your schema super powers!</p>
 
