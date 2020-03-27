@@ -1,4 +1,6 @@
 {
+	"name": "🧭 GraphQL Directives",
+	"description": "A collection of custom GraphQL Schema Directives for use with Apollo Server",
 	"noHeader": true,
 	"homepage:": "http://saeris.io",
 	"repo": "https://github.com/saeris/graphql-directives",

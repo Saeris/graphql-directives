@@ -1,7 +1,7 @@
 {
   "name": "@saeris/graphql-directives",
   "version": "0.3.1",
-  "description": "A collection of custom GraphQL Schema Directives for use with Apollo Server.",
+  "description": "A collection of custom GraphQL Schema Directives for use with Apollo Server",
   "keywords": [
     "apollo",
     "graphql",
