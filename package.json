@@ -37,7 +37,7 @@
     "date-fns": "2.11.0",
     "dinero.js": "^1.8.1",
     "libphonenumber-js": "^1.7.48",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.16",
     "mathjs": "^6.6.1",
     "numeral": "2.0.6"
   },
