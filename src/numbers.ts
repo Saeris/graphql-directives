@@ -23,7 +23,12 @@ export class formatNumber extends SchemaDirectiveVisitor {
 
     field.args.push({ name: `format`, type: GraphQLString } as GraphQLArgument)
 
-    field.resolve = async function(source, { format, ...args }, context, info) {
+    field.resolve = async function (
+      source,
+      { format, ...args },
+      context,
+      info
+    ) {
       const result = await resolve.call(this, source, args, context, info)
       const transform = (input: any) =>
         numeral(input).format(format || defaultFormat)

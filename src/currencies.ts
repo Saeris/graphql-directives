@@ -46,7 +46,7 @@ export class formatCurrency extends SchemaDirectiveVisitor {
       type: getTypeMap(roundingModeEnum).RoundingMode
     } as GraphQLArgument)
 
-    field.resolve = async function(
+    field.resolve = async function (
       source,
       { format, currency, roundingMode, ...args },
       context,

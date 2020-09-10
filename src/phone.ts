@@ -40,7 +40,12 @@ export class formatPhoneNumber extends SchemaDirectiveVisitor {
       type: getTypeMap(phoneFormats).PhoneFormats
     } as GraphQLArgument)
 
-    field.resolve = async function(source, { format, ...args }, context, info) {
+    field.resolve = async function (
+      source,
+      { format, ...args },
+      context,
+      info
+    ) {
       const result = await resolve.call(this, source, args, context, info)
       const transform = (input: string) =>
         parsePhoneNumber(input).format(

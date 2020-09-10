@@ -38,7 +38,7 @@ class CreateStringDirective extends SchemaDirectiveVisitor {
 
   visitFieldDefinition(field: GraphQLField<any, any, any>) {
     const { resolve = defaultFieldResolver } = field
-    field.resolve = async function(...args) {
+    field.resolve = async function (...args) {
       const result = await resolve.apply(this, args)
       const transform = (input: string) =>
         typeof input === `string`

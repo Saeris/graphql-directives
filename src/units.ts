@@ -7,7 +7,7 @@ import {
   GraphQLField,
   GraphQLArgument
 } from "graphql"
-import * as math from "mathjs"
+import { unit } from "mathjs"
 import { getTypeMap } from "./utils"
 
 class createUnitDirective extends SchemaDirectiveVisitor {
@@ -37,7 +37,7 @@ class createUnitDirective extends SchemaDirectiveVisitor {
     } as GraphQLArgument)
     field.args.push({ name: `raw`, type: GraphQLBoolean } as GraphQLArgument)
 
-    field.resolve = async function(
+    field.resolve = async function (
       source,
       { convertTo, raw, ...args },
       context,
@@ -45,9 +45,7 @@ class createUnitDirective extends SchemaDirectiveVisitor {
     ) {
       const result = await resolve.call(this, source, args, context, info)
       const transform = (input: number) => {
-        const value = math
-          .unit(input, originalUnit)
-          .to(convertTo || originalUnit)
+        const value = unit(input, originalUnit).to(convertTo || originalUnit)
         return raw || defaultRaw
           ? value.toNumeric(convertTo || originalUnit)
           : value.toString()
@@ -103,8 +101,8 @@ const binaryPrefixes = {
   yotta: `Y`
 }
 
-const applyPrefixes = (arr: string[], unit: string) =>
-  arr.map(prefix => `${prefix}${unit}`)
+const applyPrefixes = (arr: string[], unitName: string) =>
+  arr.map(prefix => `${prefix}${unitName}`)
 
 const generatePrefixes = (
   normalPrefixes: string[],
