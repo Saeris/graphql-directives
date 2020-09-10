@@ -1,6 +1,6 @@
 {
   "name": "@saeris/graphql-directives",
-  "version": "0.4.0",
+  "version": "0.3.1",
   "description": "A collection of custom GraphQL Schema Directives for use with Apollo Server",
   "keywords": [
     "apollo",
@@ -30,7 +30,9 @@
     "test:coverage": "jest -c ./jest.config.js && codecov",
     "precommit": "lint-staged",
     "release": "pika publish",
-    "version": "npm run build"
+    "version": "npm run build",
+    "snyk-protect": "snyk protect",
+    "prepare": "yarn run snyk-protect"
   },
   "dependencies": {
     "date-fns": "2.16.1",
@@ -39,7 +41,8 @@
     "libphonenumber-js": "^1.7.57",
     "lodash": "^4.17.20",
     "mathjs": "^7.2.0",
-    "numeral": "2.0.6"
+    "numeral": "2.0.6",
+    "snyk": "^1.393.0"
   },
   "devDependencies": {
     "@babel/core": "^7.11.6",
@@ -112,5 +115,6 @@
   },
   "gitHooks": {
     "pre-commit": "lint-staged"
-  }
+  },
+  "snyk": true
 }
