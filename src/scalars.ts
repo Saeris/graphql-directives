@@ -1,5 +1,4 @@
 import { GraphQLScalarType, GraphQLScalarTypeConfig } from "graphql"
-import Joi from "@hapi/joi"
 
 export class MaxLength extends GraphQLScalarType {
   constructor(
@@ -10,13 +9,14 @@ export class MaxLength extends GraphQLScalarType {
       name: `MaxLength${limit}`,
 
       serialize(value) {
-        const serialized = type.serialize(value)
-        Joi.assert(
-          serialized,
-          [Joi.string().max(limit), Joi.number().max(limit)],
-          new TypeError(`Value exceeds limit: ${limit}`)
-        )
-        return serialized
+        const serialized = type?.serialize?.(value)
+        if (typeof value === `string` && value.length <= limit) {
+          return serialized
+        }
+        if (typeof value === `number` && !isNaN(value) && value <= limit) {
+          return serialized
+        }
+        throw new TypeError(`Value exceeds limit: ${limit}`)
       },
 
       parseValue(value) {
@@ -39,13 +39,14 @@ export class MinLength extends GraphQLScalarType {
       name: `MinLength${limit}`,
 
       serialize(value) {
-        const serialized = type.serialize(value)
-        Joi.assert(
-          serialized,
-          [Joi.string().min(limit), Joi.number().min(limit)],
-          new TypeError(`Value beneath limit: ${limit}`)
-        )
-        return serialized
+        const serialized = type?.serialize?.(value)
+        if (typeof value === `string` && value.length >= limit) {
+          return serialized
+        }
+        if (typeof value === `number` && !isNaN(value) && value >= limit) {
+          return serialized
+        }
+        throw new TypeError(`Value beneath limit: ${limit}`)
       },
 
       parseValue(value) {
@@ -68,13 +69,11 @@ export class GreaterThan extends GraphQLScalarType {
       name: `GreaterThan${limit}`,
 
       serialize(value) {
-        const serialized = type.serialize(value)
-        Joi.assert(
-          serialized,
-          Joi.number().greater(limit),
-          new TypeError(`Value beneath limit: ${limit}`)
-        )
-        return serialized
+        const serialized = type?.serialize?.(value)
+        if (typeof value === `number` && !isNaN(value) && value > limit) {
+          return serialized
+        }
+        throw new TypeError(`Value beneath limit: ${limit}`)
       },
 
       parseValue(value) {
@@ -97,13 +96,11 @@ export class LessThan extends GraphQLScalarType {
       name: `LessThan${limit}`,
 
       serialize(value) {
-        const serialized = type.serialize(value)
-        Joi.assert(
-          serialized,
-          Joi.number().less(limit),
-          new TypeError(`Value exceeds limit: ${limit}`)
-        )
-        return serialized
+        const serialized = type?.serialize?.(value)
+        if (typeof value === `number` && !isNaN(value) && value < limit) {
+          return serialized
+        }
+        throw new TypeError(`Value exceeds limit: ${limit}`)
       },
 
       parseValue(value) {

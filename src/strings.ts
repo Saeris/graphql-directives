@@ -1,21 +1,33 @@
 import gql from "graphql-tag"
 import { SchemaDirectiveVisitor } from "graphql-tools"
 import { defaultFieldResolver, GraphQLString, GraphQLField } from "graphql"
-import lodash from "lodash"
+import _camelCase from "lodash-es/camelCase"
+import _capitalize from "lodash-es/capitalize"
+import _deburr from "lodash-es/deburr"
+import _kebabCase from "lodash-es/kebabCase"
+import _lowerCase from "lodash-es/lowerCase"
+import _lowerFirst from "lodash-es/lowerFirst"
+import _snakeCase from "lodash-es/snakeCase"
+import _toLower from "lodash-es/toLower"
+import _toUpper from "lodash-es/toUpper"
+import _trim from "lodash-es/trim"
+import _upperCase from "lodash-es/upperCase"
+import _upperFirst from "lodash-es/upperFirst"
 
-type Methods =
-  | "camelCase"
-  | "capitalize"
-  | "deburr"
-  | "kebabCase"
-  | "lowerCase"
-  | "lowerFirst"
-  | "snakeCase"
-  | "toLower"
-  | "toUpper"
-  | "trim"
-  | "upperCase"
-  | "upperFirst"
+const methods = {
+  camelCase: _camelCase,
+  capitalize: _capitalize,
+  deburr: _deburr,
+  kebabCase: _kebabCase,
+  lowerCase: _lowerCase,
+  lowerFirst: _lowerFirst,
+  snakeCase: _snakeCase,
+  toLower: _toLower,
+  toUpper: _toUpper,
+  trim: _trim,
+  upperCase: _upperCase,
+  upperFirst: _upperFirst
+}
 
 class CreateStringDirective extends SchemaDirectiveVisitor {
   public static declaration() {
@@ -29,7 +41,9 @@ class CreateStringDirective extends SchemaDirectiveVisitor {
     field.resolve = async function(...args) {
       const result = await resolve.apply(this, args)
       const transform = (input: string) =>
-        typeof input === `string` ? lodash[this.name as Methods](input) : input
+        typeof input === `string`
+          ? methods[this.name as keyof typeof methods](input)
+          : input
       return Array.isArray(result) ? result.map(transform) : transform(result)
     }
 
