@@ -35,7 +35,7 @@
   "dependencies": {
     "date-fns": "2.16.1",
     "dinero.js": "^1.8.1",
-    "graphql-tools": "^6.2.1",
+    "graphql-tools": "^6.2.3",
     "libphonenumber-js": "^1.7.57",
     "lodash": "^4.17.20",
     "mathjs": "^7.2.0",
