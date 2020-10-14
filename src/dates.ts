@@ -1,20 +1,35 @@
-import gql from "graphql-tag"
-import { SchemaDirectiveVisitor } from "graphql-tools"
+import { SchemaDirectiveVisitor } from "apollo-server"
 import {
   defaultFieldResolver,
+  GraphQLDirective,
+  DirectiveLocation,
   GraphQLString,
   GraphQLField,
   GraphQLArgument
 } from "graphql"
 import { default as formatter } from "date-fns/format"
+import { directiveToString, directiveToDocumentNode } from "./utils"
 
 export class formatDate extends SchemaDirectiveVisitor {
-  static declaration() {
-    return gql`
-      directive @formatDate(
-        defaultFormat: String! = "mmmm d, yyyy"
-      ) on FIELD_DEFINITION
-    `
+  static getDirectiveDeclaration() {
+    return new GraphQLDirective({
+      name: `formatDate`,
+      locations: [DirectiveLocation.FIELD_DEFINITION],
+      args: {
+        defaultFormat: {
+          type: GraphQLString,
+          defaultValue: `mmmm d, yyyy`
+        }
+      }
+    })
+  }
+
+  static toString() {
+    return directiveToString(this.getDirectiveDeclaration())
+  }
+
+  static toDocumentNode() {
+    return directiveToDocumentNode(this.getDirectiveDeclaration())
   }
 
   visitFieldDefinition(field: GraphQLField<any, any, any>) {

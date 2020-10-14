@@ -33,12 +33,12 @@
     "version": "npm run build"
   },
   "dependencies": {
+    "apollo-server": "^2.18.2",
     "date-fns": "2.16.1",
     "dinero.js": "^1.8.1",
-    "graphql-tools": "^6.2.1",
-    "libphonenumber-js": "^1.7.57",
+    "libphonenumber-js": "^1.8.4",
     "lodash": "^4.17.20",
-    "mathjs": "^7.2.0",
+    "mathjs": "^7.5.1",
     "numeral": "2.0.6"
   },
   "devDependencies": {
@@ -56,38 +56,39 @@
     "@pika/plugin-standard-pkg": "^0.9.2",
     "@types/dinero.js": "^1.6.5",
     "@types/graphql": "14.5.0",
-    "@types/hapi__joi": "^17.1.4",
-    "@types/jest": "^26.0.13",
+    "@types/jest": "^26.0.14",
     "@types/lodash-es": "^4.17.3",
     "@types/mathjs": "^6.0.5",
-    "@types/node": "^14.6.4",
+    "@types/node": "^14.11.8",
     "@types/numeral": "^0.0.28",
-    "@typescript-eslint/eslint-plugin": "^4.1.0",
-    "@typescript-eslint/parser": "^4.1.0",
-    "apollo-server": "^2.17.0",
+    "@typescript-eslint/eslint-plugin": "^4.4.1",
+    "@typescript-eslint/parser": "^4.4.1",
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.1.0",
-    "babel-jest": "^26.3.0",
-    "codecov": "^3.7.2",
+    "babel-jest": "^26.5.2",
+    "codecov": "^3.8.0",
     "core-js": "3.6.5",
-    "eslint": "^7.8.1",
-    "eslint-plugin-import": "^2.22.0",
-    "eslint-plugin-jest": "^24.0.0",
+    "eslint": "^7.11.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jest": "^24.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "esm": "3.2.25",
     "fiddly": "^0.9.1",
     "graphql": "15.3.0",
     "graphql-tag": "^2.11.0",
-    "jest": "^26.4.2",
-    "lint-staged": "^10.3.0",
-    "nodemon": "2.0.4",
+    "jest": "^26.5.3",
+    "lint-staged": "^10.4.0",
+    "nodemon": "2.0.5",
     "npm-run-all": "^4.1.5",
-    "prettier": "^2.1.1",
-    "typescript": "^4.0.2"
+    "prettier": "^2.1.2",
+    "typescript": "^4.0.3"
   },
   "peerDependencies": {
-    "graphql": "^14.0.0",
-    "graphql-tag": "^2.10.1"
+    "graphql": "^15.3.0",
+    "graphql-tag": "^2.11.0"
+  },
+  "resolutions": {
+    "graphql-tools": "4.0.7"
   },
   "@pika/pack": {
     "pipeline": [

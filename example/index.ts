@@ -10,8 +10,8 @@ const endpoint = host
   ? `https://${host.replace(`sse-sandbox-`, ``)}.sse.codesandbox.io`
   : `localhost:9000`
 
-const directives = Object.values(schemaDirectives).map(directive =>
-  directive.declaration()
+const directives = Object.values(schemaDirectives).map((directive) =>
+  directive.toDocumentNode()
 )
 
 const server = new ApolloServer({

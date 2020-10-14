@@ -1,32 +1,46 @@
-import gql from "graphql-tag"
-import { SchemaDirectiveVisitor } from "graphql-tools"
+import { SchemaDirectiveVisitor } from "apollo-server"
 import {
   defaultFieldResolver,
+  GraphQLDirective,
+  DirectiveLocation,
+  GraphQLEnumType,
   GraphQLString,
   GraphQLField,
   GraphQLArgument
 } from "graphql"
 import { parsePhoneNumber, NumberFormat } from "libphonenumber-js"
-import { getTypeMap } from "./utils"
+import { directiveToString, directiveToDocumentNode } from "./utils"
 
-const phoneFormats = `
-  enum PhoneFormats {
-    National
-    International
-    E164
-    RFC3966
+const PhoneFormats = new GraphQLEnumType({
+  name: `PhoneFormats`,
+  values: {
+    National: {},
+    International: {},
+    E164: {},
+    RFC3966: {}
   }
-`
+})
 
 export class formatPhoneNumber extends SchemaDirectiveVisitor {
-  static declaration() {
-    return gql`
-      directive @formatPhoneNumber(
-        defaultFormat: PhoneFormats! = International
-      ) on FIELD_DEFINITION
+  static getDirectiveDeclaration() {
+    return new GraphQLDirective({
+      name: `formatPhoneNumber`,
+      locations: [DirectiveLocation.FIELD_DEFINITION],
+      args: {
+        defaultFormat: {
+          type: PhoneFormats,
+          defaultValue: `International`
+        }
+      }
+    })
+  }
 
-      ${phoneFormats}
-    `
+  static toString() {
+    return directiveToString(this.getDirectiveDeclaration())
+  }
+
+  static toDocumentNode() {
+    return directiveToDocumentNode(this.getDirectiveDeclaration())
   }
 
   visitFieldDefinition(field: GraphQLField<any, any, any>) {
@@ -37,7 +51,7 @@ export class formatPhoneNumber extends SchemaDirectiveVisitor {
 
     field.args.push({
       name: `format`,
-      type: getTypeMap(phoneFormats).PhoneFormats
+      type: PhoneFormats
     } as GraphQLArgument)
 
     field.resolve = async function (

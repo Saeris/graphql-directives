@@ -1,35 +1,52 @@
-import gql from "graphql-tag"
-import { SchemaDirectiveVisitor } from "graphql-tools"
+import { SchemaDirectiveVisitor } from "apollo-server"
 import {
   defaultFieldResolver,
+  GraphQLDirective,
+  DirectiveLocation,
   GraphQLString,
+  GraphQLEnumType,
   GraphQLField,
   GraphQLArgument
 } from "graphql"
 import dinero from "dinero.js"
-import { getTypeMap } from "./utils"
+import { directiveToString, directiveToDocumentNode } from "./utils"
 
-const roundingModeEnum = `
-  enum RoundingMode {
-    HALF_ODD
-    HALF_EVEN
-    HALF_UP
-    HALF_DOWN
-    HALF_TOWARD_ZERO
-    HALF_AWAY_FROM_ZERO
+const RoundingMode = new GraphQLEnumType({
+  name: `RoundingMode`,
+  values: {
+    HALF_ODD: {},
+    HALF_EVEN: {},
+    HALF_UP: {},
+    HALF_DOWN: {},
+    HALF_TOWARD_ZERO: {},
+    HALF_AWAY_FROM_ZERO: {}
   }
-`
+})
 
 export class formatCurrency extends SchemaDirectiveVisitor {
-  static declaration() {
-    return gql`
-      directive @formatCurrency(
-        defaultFormat: String! = "$0,0.00"
-        defaultRoundingMode: RoundingMode! = HALF_AWAY_FROM_ZERO
-      ) on FIELD_DEFINITION
+  static getDirectiveDeclaration() {
+    return new GraphQLDirective({
+      name: `formatCurrency`,
+      locations: [DirectiveLocation.FIELD_DEFINITION],
+      args: {
+        defaultFormat: {
+          type: GraphQLString,
+          defaultValue: `$0,0.00`
+        },
+        defaultRoundingMode: {
+          type: RoundingMode,
+          defaultValue: `HALF_AWAY_FROM_ZERO`
+        }
+      }
+    })
+  }
 
-      ${roundingModeEnum}
-    `
+  static toString() {
+    return directiveToString(this.getDirectiveDeclaration())
+  }
+
+  static toDocumentNode() {
+    return directiveToDocumentNode(this.getDirectiveDeclaration())
   }
 
   visitFieldDefinition(field: GraphQLField<any, any, any>) {
@@ -43,7 +60,7 @@ export class formatCurrency extends SchemaDirectiveVisitor {
     } as GraphQLArgument)
     field.args.push({
       name: `roundingMode`,
-      type: getTypeMap(roundingModeEnum).RoundingMode
+      type: RoundingMode
     } as GraphQLArgument)
 
     field.resolve = async function (

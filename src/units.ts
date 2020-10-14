@@ -1,30 +1,45 @@
-import gql from "graphql-tag"
-import { SchemaDirectiveVisitor } from "graphql-tools"
+import { SchemaDirectiveVisitor } from "apollo-server"
 import {
   defaultFieldResolver,
+  GraphQLDirective,
+  DirectiveLocation,
   GraphQLString,
   GraphQLBoolean,
   GraphQLField,
-  GraphQLArgument
+  GraphQLArgument,
+  GraphQLEnumType
 } from "graphql"
 import { unit } from "mathjs"
-import { getTypeMap } from "./utils"
+import { directiveToString, directiveToDocumentNode } from "./utils"
 
 class createUnitDirective extends SchemaDirectiveVisitor {
   unit: string = ``
   static _unit: string = ``
-  baseEnum: string = ``
-  static _baseEnum: string = ``
+  baseEnum!: GraphQLEnumType
+  static _baseEnum: GraphQLEnumType
 
-  static declaration() {
-    return gql`
-      directive @convert${this._unit}(
-        originalUnit: ${this._unit}TypesEnum!
-        defaultRaw: Boolean! = false
-      ) on FIELD_DEFINITION
+  static getDirectiveDeclaration() {
+    return new GraphQLDirective({
+      name: `convert${this._unit}`,
+      locations: [DirectiveLocation.FIELD_DEFINITION],
+      args: {
+        originalUnit: {
+          type: this._baseEnum
+        },
+        defaultRaw: {
+          type: GraphQLBoolean,
+          defaultValue: false
+        }
+      }
+    })
+  }
 
-      ${this._baseEnum}
-      `
+  static toString() {
+    return directiveToString(this.getDirectiveDeclaration())
+  }
+
+  static toDocumentNode() {
+    return directiveToDocumentNode(this.getDirectiveDeclaration())
   }
 
   visitFieldDefinition(field: GraphQLField<any, any, any>) {
@@ -33,7 +48,7 @@ class createUnitDirective extends SchemaDirectiveVisitor {
 
     field.args.push({
       name: `convertTo`,
-      type: getTypeMap(this.baseEnum)[`${this.unit}TypesEnum`]
+      type: this.baseEnum
     } as GraphQLArgument)
     field.args.push({ name: `raw`, type: GraphQLBoolean } as GraphQLArgument)
 
@@ -102,7 +117,7 @@ const binaryPrefixes = {
 }
 
 const applyPrefixes = (arr: string[], unitName: string) =>
-  arr.map(prefix => `${prefix}${unitName}`)
+  arr.map((prefix) => `${prefix}${unitName}`)
 
 const generatePrefixes = (
   normalPrefixes: string[],
@@ -124,34 +139,43 @@ const generateBinaryPrefixes = generatePrefixes(
   Object.values(binaryPrefixes)
 )
 
-const LengthTypesEnum = `enum LengthTypesEnum {
-  ${generateDecimalPrefixes(`meter`, `meters`, `m`)}
-  inch
-  inches
-  in
-  foot
-  feet
-  ft
-  yard
-  yards
-  yd
-  mile
-  miles
-  mi
-  link
-  links
-  li
-  rod
-  rods
-  rd
-  chain
-  chains
-  ch
-  angstrom
-  angstroms
-  mil
-  mils
-}`
+const createEnum = (name: string, values: string[]) =>
+  new GraphQLEnumType({
+    name,
+    values: values.reduce<{ [key: string]: {} }>((hash, key) => {
+      hash[key] = {}
+      return hash
+    }, {})
+  })
+
+const LengthTypesEnum = createEnum(`LengthTypesEnum`, [
+  ...generateDecimalPrefixes(`meter`, `meters`, `m`),
+  `inch`,
+  `inches`,
+  `in`,
+  `foot`,
+  `feet`,
+  `ft`,
+  `yard`,
+  `yards`,
+  `yd`,
+  `mile`,
+  `miles`,
+  `mi`,
+  `link`,
+  `links`,
+  `li`,
+  `rod`,
+  `rods`,
+  `rd`,
+  `chain`,
+  `chains`,
+  `ch`,
+  `angstrom`,
+  `angstroms`,
+  `mil`,
+  `mils`
+])
 
 export class convertLength extends createUnitDirective {
   unit = `Length`
@@ -160,20 +184,20 @@ export class convertLength extends createUnitDirective {
   static _baseEnum = LengthTypesEnum
 }
 
-const SurfaceAreaTypesEnum = `enum SurfaceAreaTypesEnum {
-  m2
-  sqin
-  sqft
-  sqyd
-  sqmi
-  sqrd
-  sqch
-  sqmil
-  acre
-  acres
-  hectare
-  hectares
-}`
+const SurfaceAreaTypesEnum = createEnum(`SurfaceAreaTypesEnum`, [
+  `m2`,
+  `sqin`,
+  `sqft`,
+  `sqyd`,
+  `sqmi`,
+  `sqrd`,
+  `sqch`,
+  `sqmil`,
+  `acre`,
+  `acres`,
+  `hectare`,
+  `hectares`
+])
 
 export class convertSurfaceArea extends createUnitDirective {
   unit = `SurfaceArea`
@@ -182,18 +206,18 @@ export class convertSurfaceArea extends createUnitDirective {
   static _baseEnum = SurfaceAreaTypesEnum
 }
 
-const VolumeTypesEnum = `enum VolumeTypesEnum {
-  m3
-  ${generateDecimalPrefixes(`litre`, `litres`, `L`)}
-  cc
-  cuin
-  cuft
-  cuyd
-  teaspoon
-  teaspoons
-  tablespoon
-  tablespoons
-}`
+const VolumeTypesEnum = createEnum(`VolumeTypesEnum`, [
+  `m3`,
+  ...generateDecimalPrefixes(`litre`, `litres`, `L`),
+  `cc`,
+  `cuin`,
+  `cuft`,
+  `cuyd`,
+  `teaspoon`,
+  `teaspoons`,
+  `tablespoon`,
+  `tablespoons`
+])
 
 export class convertVolume extends createUnitDirective {
   unit = `Volume`
@@ -202,37 +226,37 @@ export class convertVolume extends createUnitDirective {
   static _baseEnum = VolumeTypesEnum
 }
 
-const LiquidVolumeTypesEnum = `enum LiquidVolumeTypesEnum {
-  minim
-  min
-  fluiddram
-  fldr
-  fluidounce
-  floz
-  gill
-  gi
-  cup
-  cups
-  cp
-  pint
-  pints
-  pt
-  quart
-  quarts
-  qt
-  gallon
-  gallons
-  gal
-  beerbarrel
-  beerbarrels
-  bbl
-  oilbarrel
-  oilbarrels
-  obl
-  hogshead
-  drop
-  gtt
-}`
+const LiquidVolumeTypesEnum = createEnum(`LiquidVolumeTypesEnum`, [
+  `minim`,
+  `min`,
+  `fluiddram`,
+  `fldr`,
+  `fluidounce`,
+  `floz`,
+  `gill`,
+  `gi`,
+  `cup`,
+  `cups`,
+  `cp`,
+  `pint`,
+  `pints`,
+  `pt`,
+  `quart`,
+  `quarts`,
+  `qt`,
+  `gallon`,
+  `gallons`,
+  `gal`,
+  `beerbarrel`,
+  `beerbarrels`,
+  `bbl`,
+  `oilbarrel`,
+  `oilbarrels`,
+  `obl`,
+  `hogshead`,
+  `drop`,
+  `gtt`
+])
 
 export class convertLiquidVolume extends createUnitDirective {
   unit = `LiquidVolume`
@@ -241,18 +265,18 @@ export class convertLiquidVolume extends createUnitDirective {
   static _baseEnum = LiquidVolumeTypesEnum
 }
 
-const AngleTypesEnum = `enum AngleTypesEnum {
-  ${generateDecimalPrefixes(`radian`, `radians`, `rad`)}
-  ${generateDecimalPrefixes(`degree`, `degrees`, `deg`)}
-  ${generateDecimalPrefixes(`gradian`, `gradians`, `grad`)}
-  cycle
-  arcsec
-  arcsecond
-  arcseconds
-  arcmin
-  arcminute
-  arcminutes
-}`
+const AngleTypesEnum = createEnum(`AngleTypesEnum`, [
+  ...generateDecimalPrefixes(`radian`, `radians`, `rad`),
+  ...generateDecimalPrefixes(`degree`, `degrees`, `deg`),
+  ...generateDecimalPrefixes(`gradian`, `gradians`, `grad`),
+  `cycle`,
+  `arcsec`,
+  `arcsecond`,
+  `arcseconds`,
+  `arcmin`,
+  `arcminute`,
+  `arcminutes`
+])
 
 export class convertAngle extends createUnitDirective {
   unit = `Angle`
@@ -261,35 +285,35 @@ export class convertAngle extends createUnitDirective {
   static _baseEnum = AngleTypesEnum
 }
 
-const TimeTypesEnum = `enum TimeTypesEnum {
-  s
-  sec
-  secs
-  second
-  seconds
-  mins
-  minute
-  minutes
-  h
-  hr
-  hrs
-  hour
-  hours
-  day
-  days
-  week
-  weeks
-  month
-  months
-  year
-  years
-  decade
-  decades
-  century
-  centuries
-  millennium
-  millennia
-}`
+const TimeTypesEnum = createEnum(`TimeTypesEnum`, [
+  `s`,
+  `sec`,
+  `secs`,
+  `second`,
+  `seconds`,
+  `mins`,
+  `minute`,
+  `minutes`,
+  `h`,
+  `hr`,
+  `hrs`,
+  `hour`,
+  `hours`,
+  `day`,
+  `days`,
+  `week`,
+  `weeks`,
+  `month`,
+  `months`,
+  `year`,
+  `years`,
+  `decade`,
+  `decades`,
+  `century`,
+  `centuries`,
+  `millennium`,
+  `millennia`
+])
 
 export class convertTime extends createUnitDirective {
   unit = `Time`
@@ -298,25 +322,25 @@ export class convertTime extends createUnitDirective {
   static _baseEnum = TimeTypesEnum
 }
 
-const MassTypesEnum = `enum MassTypesEnum {
-  ${generateDecimalPrefixes(`gram`, `grams`, `g`)}
-  ${generateDecimalPrefixes(`tonne`, `tonnes`, `t`)}
-  ton
-  grain
-  gr
-  dram
-  dr
-  ounce
-  oz
-  poundmass
-  lbm
-  lb
-  lbs
-  hundredweight
-  cwt
-  stick
-  stone
-}`
+const MassTypesEnum = createEnum(`MassTypesEnum`, [
+  ...generateDecimalPrefixes(`gram`, `grams`, `g`),
+  ...generateDecimalPrefixes(`tonne`, `tonnes`, `t`),
+  `ton`,
+  `grain`,
+  `gr`,
+  `dram`,
+  `dr`,
+  `ounce`,
+  `oz`,
+  `poundmass`,
+  `lbm`,
+  `lb`,
+  `lbs`,
+  `hundredweight`,
+  `cwt`,
+  `stick`,
+  `stone`
+])
 
 export class convertMass extends createUnitDirective {
   unit = `Mass`
@@ -325,16 +349,16 @@ export class convertMass extends createUnitDirective {
   static _baseEnum = MassTypesEnum
 }
 
-const TemperatureTypesEnum = `enum TemperatureTypesEnum {
-  kelvin
-  K
-  celsius
-  degC
-  fahrenheit
-  degF
-  rankine
-  degR
-}`
+const TemperatureTypesEnum = createEnum(`TemperatureTypesEnum`, [
+  `kelvin`,
+  `K`,
+  `celsius`,
+  `degC`,
+  `fahrenheit`,
+  `degF`,
+  `rankine`,
+  `degR`
+])
 
 export class convertTemperature extends createUnitDirective {
   unit = `Temperature`
@@ -343,13 +367,13 @@ export class convertTemperature extends createUnitDirective {
   static _baseEnum = TemperatureTypesEnum
 }
 
-const ForceTypesEnum = `enum ForceTypesEnum {
-  ${generateDecimalPrefixes(`newton`, `newtons`, `N`)}
-  ${generateDecimalPrefixes(`dyne`, `dynes`, `dyn`)}
-  poundforce
-  lbf
-  kip
-}`
+const ForceTypesEnum = createEnum(`ForceTypesEnum`, [
+  ...generateDecimalPrefixes(`newton`, `newtons`, `N`),
+  ...generateDecimalPrefixes(`dyne`, `dynes`, `dyn`),
+  `poundforce`,
+  `lbf`,
+  `kip`
+])
 
 export class convertForce extends createUnitDirective {
   unit = `Force`
@@ -358,14 +382,14 @@ export class convertForce extends createUnitDirective {
   static _baseEnum = ForceTypesEnum
 }
 
-const EnergyTypesEnum = `enum EnergyTypesEnum {
-  joule
-  J
-  erg
-  Wh
-  BTU
-  ${generateDecimalPrefixes(`electronvolt`, `electronvolts`, `eV`)}
-}`
+const EnergyTypesEnum = createEnum(`EnergyTypesEnum`, [
+  `joule`,
+  `J`,
+  `erg`,
+  `Wh`,
+  `BTU`,
+  ...generateDecimalPrefixes(`electronvolt`, `electronvolts`, `eV`)
+])
 
 export class convertEnergy extends createUnitDirective {
   unit = `Energy`
@@ -374,10 +398,10 @@ export class convertEnergy extends createUnitDirective {
   static _baseEnum = EnergyTypesEnum
 }
 
-const PowerTypesEnum = `enum PowerTypesEnum {
-  ${generateDecimalPrefixes(`watt`, `watts`, `W`)}
-  hp
-}`
+const PowerTypesEnum = createEnum(`PowerTypesEnum`, [
+  ...generateDecimalPrefixes(`watt`, `watts`, `W`),
+  `hp`
+])
 
 export class convertPower extends createUnitDirective {
   unit = `Power`
@@ -386,16 +410,16 @@ export class convertPower extends createUnitDirective {
   static _baseEnum = PowerTypesEnum
 }
 
-const PressureTypesEnum = `enum PressureTypesEnum {
-  Pa
-  psi
-  atm
-  torr
-  bar
-  mmHg
-  mmH2O
-  cmH2O
-}`
+const PressureTypesEnum = createEnum(`PressureTypesEnum`, [
+  `Pa`,
+  `psi`,
+  `atm`,
+  `torr`,
+  `bar`,
+  `mmHg`,
+  `mmH2O`,
+  `cmH2O`
+])
 
 export class convertPressure extends createUnitDirective {
   unit = `Pressure`
@@ -404,19 +428,22 @@ export class convertPressure extends createUnitDirective {
   static _baseEnum = PressureTypesEnum
 }
 
-const ElectroMagneticForceTypesEnum = `enum ElectroMagneticForceTypesEnum {
-  ${generateDecimalPrefixes(`coulomb`, `coulombs`, `C`)}
-  ${generateDecimalPrefixes(`watt`, `watts`, `W`)}
-  ${generateDecimalPrefixes(`farad`, `farads`, `F`)}
-  ${generateDecimalPrefixes(`volt`, `volts`, `V`)}
-  ${generateDecimalPrefixes(`henry`, `henrys`, `H`)}
-  ${generateDecimalPrefixes(`weber`, `webers`, `Wb`)}
-  ${generateDecimalPrefixes(`tesla`, `teslas`, `T`)}
-  ${generateDecimalPrefixes(`electronvolt`, `electronvolts`, `eV`)}
-  ${generateDecimalPrefixes(`ampere`, `amperes`, `A`)}
-  ohm
-  siemens
-}`
+const ElectroMagneticForceTypesEnum = createEnum(
+  `ElectroMagneticForceTypesEnum`,
+  [
+    ...generateDecimalPrefixes(`coulomb`, `coulombs`, `C`),
+    ...generateDecimalPrefixes(`watt`, `watts`, `W`),
+    ...generateDecimalPrefixes(`farad`, `farads`, `F`),
+    ...generateDecimalPrefixes(`volt`, `volts`, `V`),
+    ...generateDecimalPrefixes(`henry`, `henrys`, `H`),
+    ...generateDecimalPrefixes(`weber`, `webers`, `Wb`),
+    ...generateDecimalPrefixes(`tesla`, `teslas`, `T`),
+    ...generateDecimalPrefixes(`electronvolt`, `electronvolts`, `eV`),
+    ...generateDecimalPrefixes(`ampere`, `amperes`, `A`),
+    `ohm`,
+    `siemens`
+  ]
+)
 
 export class convertElectroMagneticForce extends createUnitDirective {
   unit = `ElectroMagneticForce`
@@ -425,10 +452,10 @@ export class convertElectroMagneticForce extends createUnitDirective {
   static _baseEnum = ElectroMagneticForceTypesEnum
 }
 
-const BinaryTypesEnum = `enum BinaryTypesEnum {
-  ${generateBinaryPrefixes(`bit`, `bits`, `b`)}
-  ${generateBinaryPrefixes(`byte`, `bytes`, `B`)}
-}`
+const BinaryTypesEnum = createEnum(`BinaryTypesEnum`, [
+  ...generateBinaryPrefixes(`bit`, `bits`, `b`),
+  ...generateBinaryPrefixes(`byte`, `bytes`, `B`)
+])
 
 export class convertBinary extends createUnitDirective {
   unit = `Binary`

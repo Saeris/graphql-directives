@@ -1,6 +1,11 @@
-import gql from "graphql-tag"
-import { SchemaDirectiveVisitor } from "graphql-tools"
-import { defaultFieldResolver, GraphQLString, GraphQLField } from "graphql"
+import { SchemaDirectiveVisitor } from "apollo-server"
+import {
+  defaultFieldResolver,
+  GraphQLDirective,
+  DirectiveLocation,
+  GraphQLString,
+  GraphQLField
+} from "graphql"
 import _camelCase from "lodash/camelCase"
 import _capitalize from "lodash/capitalize"
 import _deburr from "lodash/deburr"
@@ -13,6 +18,7 @@ import _toUpper from "lodash/toUpper"
 import _trim from "lodash/trim"
 import _upperCase from "lodash/upperCase"
 import _upperFirst from "lodash/upperFirst"
+import { directiveToString, directiveToDocumentNode } from "./utils"
 
 const methods = {
   camelCase: _camelCase,
@@ -30,10 +36,19 @@ const methods = {
 }
 
 class CreateStringDirective extends SchemaDirectiveVisitor {
-  public static declaration() {
-    return gql`
-    directive @${this.name} on FIELD_DEFINITION
-  `
+  static getDirectiveDeclaration() {
+    return new GraphQLDirective({
+      name: this.name,
+      locations: [DirectiveLocation.FIELD_DEFINITION]
+    })
+  }
+
+  static toString() {
+    return directiveToString(this.getDirectiveDeclaration())
+  }
+
+  static toDocumentNode() {
+    return directiveToDocumentNode(this.getDirectiveDeclaration())
   }
 
   visitFieldDefinition(field: GraphQLField<any, any, any>) {

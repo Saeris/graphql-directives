@@ -7,7 +7,7 @@ import * as Strings from "./strings"
 import * as Units from "./units"
 
 // Export all durectives as default
-export default {
+const schemaDirectives = {
   ...Currencies,
   ...Dates,
   // ...Limits,
@@ -16,6 +16,8 @@ export default {
   ...Strings,
   ...Units
 }
+
+export default schemaDirectives
 
 // Export namespaced groups of directives
 export {

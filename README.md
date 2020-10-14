@@ -77,11 +77,18 @@ const server = new ApolloServer({
   typeDefs: [
     ...typeDefs,
     // Map over each directive and get it's type declaration to add them to your schema
-    ...Object.values(Directives).map(directive => directive.declaration())
+    //
+    // Apollo prefers not to mix and match types for graphql type definitions, so typeDefs
+    // should be either string[] or DocumentNode[]. We expose two helper methods to get the
+    // correct type declaration.
+    //
+    // - use directive#toString() when your types are plain strings
+    // - use directive#toDocumentNode() when your types are defined using graphql-tag
+    ...Object.values(Directives).map((directive) => directive.toDocumentNode())
     // Follow the same pattern to get type declarations for groups
-    // ...Object.values(Strings).map(directive = directive.declaration())
+    // ...Object.values(Strings).map(directive = directive.toDocumentNode())
     // Or for individual directives, just call the getter directly
-    // formatDate.declaration()
+    // formatDate.toDocumentNode()
   ],
   resolvers,
   // Add the directives to your schemaDirectives map
