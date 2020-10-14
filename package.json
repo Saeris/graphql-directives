@@ -38,7 +38,7 @@
     "graphql-tools": "^6.2.1",
     "libphonenumber-js": "^1.7.57",
     "lodash": "^4.17.20",
-    "mathjs": "^7.2.0",
+    "mathjs": "^7.5.1",
     "numeral": "2.0.6"
   },
   "devDependencies": {
