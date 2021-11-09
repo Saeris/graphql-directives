@@ -33,7 +33,7 @@
     "version": "npm run build"
   },
   "dependencies": {
-    "apollo-server": "^2.18.2",
+    "apollo-server": "^2.25.3",
     "date-fns": "2.16.1",
     "dinero.js": "^1.8.1",
     "libphonenumber-js": "^1.8.4",
